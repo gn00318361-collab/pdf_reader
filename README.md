@@ -4,7 +4,7 @@
 
 第一版目標不是自動改 PDF，而是自動產生「疑似注音錯誤清單」，讓老師或校稿人快速複核。
 
-最新方向：不要再期待一般 OCR 直接讀完整頁中文字和小注音。實測後，專案核心應改成「訓練注音符號專用 OCR / 分類器」，再把它接回 PDF 校稿流程。
+最新方向：不要再期待一般 OCR 直接讀完整頁中文字和小注音。實測後，專案核心應改成「先建立注音辨識 benchmark 與切割 pipeline；如果現成 OCR 無法達標，再訓練注音符號專用小模型」。
 
 ## 使用情境
 
@@ -72,7 +72,7 @@ image_only_pages: 44
 
 如果未來拿到真正保留文字層的 PDF，流程可以簡化成「直接抽文字與座標」。但以目前這份範例檔為準，請下一位 Codex 直接以 OCR pipeline 規劃，不要假設有文字層。
 
-## 方向調整：自訓注音 OCR
+## 方向調整：先 Benchmark，再決定是否訓練
 
 已確認一般 OCR 不足以完成這個任務：
 
@@ -80,19 +80,19 @@ image_only_pages: 44
 - Apple Vision OCR 可以抓到一些大字，但注音與中文字混在一起時輸出很亂。
 - 第 22 頁已知錯誤是 `成為` 的 `為` 注音，不是先前誤判的 `心理方面`。這說明靠人工看圖或一般 OCR 在整頁中自由找錯，準確率不夠。
 
-新的核心策略：
+新的核心策略不是一開始訓練完整 OCR，而是先把問題拆小：
 
 ```text
 1. PDF 頁面渲染成高解析圖片
-2. 找出中文字與旁邊注音的視覺區域
-3. 將注音小圖切出並建立標註資料集
-4. 訓練注音符號專用分類器
-5. 將每個字旁邊的注音組回來
-6. 查教育部標準注音
-7. 比對並輸出疑似錯誤
+2. 找出疑似有注音的區域
+3. 針對已知錯誤案例做手動/半自動 crop benchmark
+4. 測試現成 OCR 是否能讀出 PDF 上實際印的注音
+5. 若現成 OCR 不行，再建立標註資料集
+6. 訓練注音符號專用分類器
+7. 將辨識結果接回教育部查詢與比對流程
 ```
 
-這裡的「注音 OCR」不必一開始做成完整 OCR。第一版可以是小型分類器：
+這裡的「注音 OCR」不應一開始做成完整整頁 OCR。若需要訓練，第一版應是小型分類器：
 
 ```text
 輸入：單一注音符號或聲調符號小圖
@@ -101,12 +101,50 @@ image_only_pages: 44
 
 注音符號類別少，遠比中文字 OCR 容易。若只針對同一批教材、同一種字型與排版，模板比對或小型 CNN 都可能很快看到效果。
 
+## Page 22 Benchmark 計畫
+
+第一個任務不是訓練模型，而是建立可重複 benchmark。
+
+Benchmark 目標：
+
+```text
+第 22 頁
+詞語：成為
+標準：ㄔㄥˊ ㄨㄟˊ
+錯誤點：為 的注音聲調
+問題：現成 OCR 能不能從 crop 圖讀出 PDF 實際印出的注音？
+```
+
+第一版 benchmark 應輸出：
+
+```json
+{
+  "page": 22,
+  "target_word": "成為",
+  "expected_standard_zhuyin": "ㄔㄥˊ ㄨㄟˊ",
+  "detected_pdf_zhuyin": "",
+  "is_correct": false,
+  "confidence": 0.0,
+  "method": "tesseract_baseline",
+  "crop_path": "artifacts/page22_benchmark/scale_4/target_chengwei_sharp.png"
+}
+```
+
+Benchmark 要回答四個問題：
+
+1. 是不是偵測不到注音？
+2. 是不是 crop 範圍切錯？
+3. 是不是聲調符號太小或太淡？
+4. 是不是現成 OCR 不支援這種小注音？
+
+只有 benchmark 顯示現成 OCR 都無法達標時，才進入訓練注音模型。
+
 ## 週末研究計畫
 
 目標不是做完整產品，而是回答一個關鍵問題：
 
 ```text
-我們能不能訓練或做出一個小工具，準確辨識第 22 頁「成為」中「為」旁邊的注音與聲調？
+我們能不能用可重複 benchmark，穩定切出並辨識第 22 頁「成為」中「為」旁邊的注音與聲調？
 ```
 
 已知第 22 頁目標：
@@ -118,13 +156,19 @@ image_only_pages: 44
 問題：為 的注音有誤
 ```
 
-### Day 1 上午：建立資料集
+### Day 1 上午：建立 Benchmark
 
-1. 渲染第 22 頁為 3x 或 4x 圖片。
-2. 使用 `scripts/extract_page_regions.py` 把文字和注音區域裁出。
-3. 鎖定 `成為溫暖的小幫手` 那一行，並裁出 `成為` 附近小圖。
-4. 從第 22 頁與其他頁面多裁一些注音符號樣本。
-5. 建立標註格式。
+1. 渲染第 22 頁為 300/450/600 DPI 等級圖片，或用 PyMuPDF scale 3/4/5 近似。
+2. 手動設定 `成為` 附近 crop 區域。
+3. 輸出原始 crop、放大 crop、二值化 crop、銳化 crop。
+4. 分別用 Tesseract / Apple Vision / 其他 OCR 跑 baseline。
+5. 將結果寫入 `artifacts/page22_benchmark/results.json`。
+
+### Day 1 下午：決定是否需要訓練
+
+如果現成 OCR 能讀出 `為` 旁邊的實際注音，先不要訓練，直接接比對流程。
+
+如果現成 OCR 仍讀不到，才建立標註資料：
 
 建議標註 CSV：
 
@@ -135,9 +179,7 @@ dataset/zhuyin/0002.png,ㄟ,22,成為,為的韻母
 dataset/zhuyin/0003.png,ˊ,22,成為,正確應為二聲
 ```
 
-### Day 1 下午：先做最小辨識器
-
-先做兩條路，哪條快就先用哪條：
+接著再做兩條路，哪條快就先用哪條：
 
 1. 模板比對
    - 適合先驗證同一份 PDF、同一字型。
@@ -148,12 +190,13 @@ dataset/zhuyin/0003.png,ˊ,22,成為,正確應為二聲
    - 類別為注音符號與聲調符號。
    - 5080 顯卡完全足夠，瓶頸在標註資料，不在訓練速度。
 
-第一天驗收標準：
+第一天 benchmark 驗收標準：
 
 ```text
-能從 target_chengwei.png 裡切出「為」旁邊的注音小圖。
-能辨識它的聲調符號。
-能和「成為：ㄔㄥˊ ㄨㄟˊ」比對，標記為疑似錯誤。
+能穩定產生「成為」附近 crop。
+能保存不同 preprocessing 版本。
+能記錄每個 OCR 方法的輸出。
+能明確判定現成 OCR 是否足以讀出「為」旁邊的注音聲調。
 ```
 
 ### Day 2：擴到整頁候選
@@ -471,6 +514,7 @@ README.md
 
 ```text
 PyMuPDF==1.27.2.3
+Pillow==12.0.0
 ```
 
 之後做 OCR 時再加入 OCR 套件或 API client。
@@ -507,6 +551,21 @@ PDF 診斷：
 .venv/bin/python pdf_zhuyin_audit.py lookup 蛤蠣
 ```
 
+Page 22 benchmark：
+
+```bash
+.venv/bin/python scripts/page22_benchmark.py
+```
+
+Page 22 區域擷取：
+
+```bash
+.venv/bin/python scripts/extract_page_regions.py page22_3x.png \
+  --output-dir artifacts/page22_regions \
+  --json-output artifacts/page22_regions.json \
+  --padding 40
+```
+
 整份 PDF 型態統計：
 
 ```bash
@@ -532,28 +591,30 @@ image_only_pages 44
 
 ## 給下一位 Codex 的接手重點
 
-請不要從 Web App 開始。這個專案第一個真正風險是 OCR 與注音座標配對，不是 UI。
+請不要從 Web App 開始，也不要一開始訓練完整 OCR。這個專案第一個真正風險是「能不能穩定讀出小注音」，尤其是第 22 頁 `成為` 的 `為`。
 
 請先做：
 
-1. 針對第 39 頁建立 OCR proof of concept。
-2. 找出 OCR 是否能穩定辨識小注音。
-3. 產生中文/注音 bbox。
-4. 實作座標配對。
-5. 只挑疑慮候選查教育部。
-6. 輸出 CSV/JSON 報告。
+1. 跑 `scripts/page22_benchmark.py`。
+2. 檢查 `artifacts/page22_benchmark/results.json`。
+3. 確認 crop 中的 `為` 旁邊注音是否清楚保留。
+4. 比較 Tesseract / Apple Vision / 其他 OCR 的輸出。
+5. 若現成 OCR 無法輸出 `ㄨㄟˊ` 或 `ㄨㄟˋ`，再進入注音專用分類器。
+6. 先讓第 22 頁 `成為` 成為第一個穩定 regression target。
 
 成功標準：
 
-- 能在第 39 頁找到至少一筆疑似錯誤。
-- 報告包含頁碼、位置、PDF 注音、教育部標準注音、來源 URL。
-- 能明確區分「疑似錯誤」與「OCR/配對信心不足」。
+- 能穩定切出第 22 頁 `成為` crop。
+- 能讀出或明確證明現成 OCR 讀不出 `為` 的 PDF 實際注音。
+- 能產生 benchmark JSON，記錄方法、crop、輸出與失敗原因。
+- 若進入訓練，訓練目標只限注音符號/聲調，不做整頁 OCR 大模型。
 
-若 OCR 無法穩定辨識注音，下一步不要硬做全自動；請改成半自動流程：
+若 benchmark 證明現成 OCR 無法穩定辨識注音，下一步不要硬做全自動；請改成注音專用流程：
 
 - 自動渲染頁面。
-- 自動找出疑似注音區域。
-- 人工框選或確認候選。
-- 再查教育部並輸出報告。
+- 自動或手動找出注音 crop。
+- 建立小型標註資料集。
+- 訓練或模板比對注音符號。
+- 再接教育部查詢與比對報告。
 
 這樣仍然能大幅減少老師查字典的時間。
