@@ -18,7 +18,9 @@
 
 範例校對來源：
 
-- PDF：`/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf`
+- Repo 內 canonical sample PDF：`sample.pdf`
+- 原始本機來源：`/Users/joneswang/Downloads/sample.pdf`
+- 舊檔名來源：`/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf`
 - 使用者提供截圖：`/Users/joneswang/Desktop/截圖 2026-06-04 下午1.30.33.png`
 - 截圖指出第 39 頁有圈起來的注音錯誤。
 - 教育部標準注音查詢範例：<https://dict.revised.moe.edu.tw/dictView.jsp?ID=68201&word=%E8%9B%A4%E8%A0%A3>
@@ -32,12 +34,14 @@
 
 ## 重要實測結論
 
+`sample.pdf` 是本 repo 的標準參考檔。後續接手 agent 應優先用這份檔案重現所有 page 22 / page 39 測試，不要依賴使用者 Downloads 裡的中文長檔名 PDF。
+
 使用者一開始以為範例 PDF 是文字型 PDF，但用 PyMuPDF 實測後，這份 PDF 實際上沒有可抽取文字層。
 
 已執行檢查：
 
 ```bash
-.venv/bin/python pdf_zhuyin_audit.py inspect "/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf" --page 39
+.venv/bin/python pdf_zhuyin_audit.py inspect sample.pdf --page 39
 ```
 
 結果：
@@ -431,7 +435,7 @@ PDF
 目前工具已有 render 指令：
 
 ```bash
-.venv/bin/python pdf_zhuyin_audit.py render "/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf" --page 39 --output page39_2x.png --scale 2
+.venv/bin/python pdf_zhuyin_audit.py render sample.pdf --page 39 --output page39_2x.png --scale 2
 ```
 
 後續 OCR 建議使用 2x 或 3x 解析度。注音很小，解析度太低會明顯影響辨識率。
@@ -693,7 +697,7 @@ python3 -m venv .venv
 PDF 診斷：
 
 ```bash
-.venv/bin/python pdf_zhuyin_audit.py inspect "/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf" --page 39
+.venv/bin/python pdf_zhuyin_audit.py inspect sample.pdf --page 39
 ```
 
 教育部查詢：
@@ -765,7 +769,7 @@ status = error / correct / uncertain
 from pathlib import Path
 from pdf_zhuyin_audit import inspect_pdf
 
-pdf = Path('/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf')
+pdf = Path('sample.pdf')
 rows = inspect_pdf(pdf)
 print('pages', len(rows))
 print('extractable_pages', sum(1 for row in rows if row['is_extractable_text']))
@@ -783,7 +787,9 @@ image_only_pages 44
 
 ## 給下一位 Codex 的接手重點
 
-請不要從 Web App 開始，也不要一開始訓練完整 OCR。這個專案第一個真正風險是「能不能穩定讀出小注音」，尤其是第 22 頁 `成為` 的 `為`。
+請先使用 repo 內的 `sample.pdf`。所謂「第 22 頁」與 `成為` / `為` 的 known issue 都來自這份 `sample.pdf`。
+
+請不要從 Web App 開始，也不要一開始訓練完整 OCR。這個專案第一個真正風險是「能不能穩定讀出小注音」，尤其是 `sample.pdf` 第 22 頁 `成為` 的 `為`。
 
 請先做：
 

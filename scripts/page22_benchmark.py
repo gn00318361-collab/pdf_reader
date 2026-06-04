@@ -8,7 +8,7 @@ import fitz
 from PIL import Image, ImageFilter, ImageOps
 
 
-PDF_PATH = Path("/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf")
+PDF_PATH = Path("sample.pdf")
 PAGE_NUMBER = 22
 
 # Coordinates are in page pixels after rendering with PyMuPDF scale=3.

@@ -5,7 +5,7 @@ This benchmark is the next correct step before training any model.
 ## Target
 
 ```text
-PDF: /Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf
+PDF: sample.pdf
 Page: 22
 Target word: 成為
 Expected standard zhuyin: ㄔㄥˊ ㄨㄟˊ

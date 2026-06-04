@@ -3,7 +3,7 @@
 PDF:
 
 ```text
-/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf
+sample.pdf
 ```
 
 Rendered page image:
@@ -17,7 +17,7 @@ Rendered page image:
 Command:
 
 ```bash
-.venv/bin/python pdf_zhuyin_audit.py inspect "/Users/joneswang/Downloads/青溪校刊-最終校稿（六年級更正版）.pdf" --page 22
+.venv/bin/python pdf_zhuyin_audit.py inspect sample.pdf --page 22
 ```
 
 Result:
