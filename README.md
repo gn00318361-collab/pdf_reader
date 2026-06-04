@@ -566,6 +566,47 @@ Page 22 區域擷取：
   --padding 40
 ```
 
+建立第一批可人工標註的注音 crop dataset：
+
+```bash
+.venv/bin/python scripts/prepare_page22_dataset.py
+```
+
+產物：
+
+```text
+dataset/zhuyin_crops/contact_sheet_page22.png
+dataset/labels/zhuyin_labels.csv
+dataset/metadata/crops.json
+```
+
+人工標註時先打開：
+
+```text
+dataset/zhuyin_crops/contact_sheet_page22.png
+dataset/labels/zhuyin_labels.csv
+```
+
+最重要的第一筆 regression sample：
+
+```text
+crop_id: p22_wei_001
+char: 為
+word_context: 成為
+expected_zhuyin: ㄨㄟˊ
+known_printed_issue: true
+```
+
+請人工填：
+
+```text
+printed_zhuyin = PDF 實際印出來的注音
+label_status = labeled 或 uncertain
+status = error / correct / uncertain
+```
+
+注意：`printed_zhuyin` 是給 OCR/模型學的目標，`expected_zhuyin` 是後續比對用的標準音，兩者不能混在一起。
+
 整份 PDF 型態統計：
 
 ```bash
