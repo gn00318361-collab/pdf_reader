@@ -1,0 +1,549 @@
+{
+  "source_image": "page22_3x.png",
+  "regions": [
+    {
+      "id": "region_003_line_1",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_003_line_1.png",
+      "bbox": [
+        561,
+        113,
+        690,
+        217
+      ],
+      "ocr_text": "說",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 1,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_005_line_2",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_005_line_2.png",
+      "bbox": [
+        197,
+        163,
+        1288,
+        283
+      ],
+      "ocr_text": "二 人 、 肢 * 體 # 障 二 礙 ” 學 了 生 7 的 # 特 - 點 多 : 必 i 理 方 : 面色",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 2,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_034_line_3",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_034_line_3.png",
+      "bbox": [
+        738,
+        250,
+        1173,
+        415
+      ],
+      "ocr_text": "| 自 y 信 px 不 去 足",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 3,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_043_line_4",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_043_line_4.png",
+      "bbox": [
+        0,
+        333,
+        1236,
+        546
+      ],
+      "ocr_text": "人 加 加 圖 歡 EE",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 4,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_050_line_5",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_050_line_5.png",
+      "bbox": [
+        322,
+        447,
+        1802,
+        565
+      ],
+      "ocr_text": "也 同",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 5,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_053_line_6",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_053_line_6.png",
+      "bbox": [
+        313,
+        467,
+        1789,
+        616
+      ],
+      "ocr_text": "用 ~ 加 點 世芳",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 6,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_059_line_7",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_059_line_7.png",
+      "bbox": [
+        208,
+        505,
+        1837,
+        702
+      ],
+      "ocr_text": "織 說 圖 - 點 | 擔 :,I 他 # 人 5 眼 ? 光 :",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 7,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_076_line_8",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_076_line_8.png",
+      "bbox": [
+        303,
+        589,
+        1837,
+        731
+      ],
+      "ocr_text": "引 說 1",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 8,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_080_line_9",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_080_line_9.png",
+      "bbox": [
+        262,
+        638,
+        1837,
+        777
+      ],
+      "ocr_text": "2 尖 點 | 吧 我 #: 們 3 的 ? 理 * 解 # 與 接納?, 對 % 他 ? 們 ? 來 9 1",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 9,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_107_line_10",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_107_line_10.png",
+      "bbox": [
+        189,
+        689,
+        1837,
+        816
+      ],
+      "ocr_text": "| 甘 aa 自 | 【 說 万 章 朮 更 一 ~ 個 《 去 人 的 2 交 3 寢 人 、",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 10,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_132_line_11",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_132_line_11.png",
+      "bbox": [
+        191,
+        683,
+        1823,
+        900
+      ],
+      "ocr_text": "一 一 天 說 :# 非 5 常 : 重 久 要 。 ! 個 # 友 >x 善 3 的 ? 眼 > 神 。 骨",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 11,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_160_line_12",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_160_line_12.png",
+      "bbox": [
+        312,
+        775,
+        1837,
+        887
+      ],
+      "ocr_text": "點 一 ~ 句 ! 溫 * 暖 約 的 話 $。 2 能 鐘 帶 訂 來 多 巨 潑 大 * 的 : 還 圖",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 12,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_188_line_13",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_188_line_13.png",
+      "bbox": [
+        195,
+        775,
+        1837,
+        931
+      ],
+      "ocr_text": "Bi 二 二 所 鋒 : 溫 : 暖 1 的 : 話 K。 都 3 能 帶 # 來 ? 巨 : 大 ? 的 六",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 13,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_216_line_14",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_216_line_14.png",
+      "bbox": [
+        197,
+        828,
+        1837,
+        960
+      ],
+      "ocr_text": "| 改變 $。 條",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 14,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_221_line_15",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_221_line_15.png",
+      "bbox": [
+        1348,
+        923,
+        1727,
+        1059
+      ],
+      "ocr_text": "寢",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 15,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_223_line_16",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_223_line_16.png",
+      "bbox": [
+        200,
+        1022,
+        940,
+        1142
+      ],
+      "ocr_text": "三 #、 學 1! 校 信 可 以 ~ 怎麼 # 幫 # 忙 2 ?",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 16,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_240_line_17",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_240_line_17.png",
+      "bbox": [
+        406,
+        1170,
+        1419,
+        1297
+      ],
+      "ocr_text": "回 【e1 只",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 17,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_244_line_18",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_244_line_18.png",
+      "bbox": [
+        218,
+        1247,
+        1576,
+        1364
+      ],
+      "ocr_text": "提前 提供 * 教 * 烤 彈性: 時 / 間 ; 安 。 排 ?# 輔助 * 科 if 技 * 應 > 用",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 18,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_269_line_19",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_269_line_19.png",
+      "bbox": [
+        224,
+        1362,
+        1438,
+        1478
+      ],
+      "ocr_text": "吧 這 # 些 1 看 ? 似 小 5 小 5 的 ? 調 : 整 #, 對 % 肢 * 體 * 障 * 氟 學5\t1\t1\t1\t19\t29\t1214\t1403\t30\t31\t68.590057\t生5\t1\t1\t1\t19\t30\t1250\t1408\t9\t23\t40.510212\t75\t1\t1\t1\t19\t31\t1280\t1402\t34\t33\t93.131851\t來5\t1\t1\t1\t19\t32\t1315\t1419\t5\t5\t75.417030\t#5\t1\t1\t1\t19\t33\t1332\t1404\t25\t29\t90.925827\t說5\t1\t1\t1\t19\t34\t1360\t1403\t38\t31\t49.785172\t2,4\t1\t1\t1\t20\t0\t334\t1467\t1071\t35\t-1\t5\t1\t1\t1\t20\t1\t334\t1471\t29\t29\t93.229164\t可5\t1\t1\t1\t20\t2\t369\t1469\t29\t30\t84.612770\t#5\t1\t1\t1\t20\t3\t405\t1470\t14\t29\t86.652214\t能5\t1\t1\t1\t20\t4\t427\t1474\t13\t23\t19.233217\t25\t1\t1\t1\t20\t5\t453\t1468\t43\t32\t93.688354\t是5\t1\t1\t1\t20\t6\t506\t1468\t26\t32\t80.343895\t讓5\t1\t1\t1\t20\t7\t540\t1474\t11\t24\t58.175056\t%5\t1\t1\t1\t20\t8\t562\t1471\t24\t28\t88.931831\t他5\t1\t1\t1\t20\t9\t592\t1474\t8\t24\t89.385170\t#5\t1\t1\t1\t20\t10\t615\t1469\t24\t31\t89.282310\t們5\t1\t1\t1\t20\t11\t646\t1470\t9\t27\t8.005390\t:5\t1\t1\t1\t20\t12\t678\t1469\t16\t30\t40.390167\t能5\t1\t1\t1\t20\t13\t705\t1474\t11\t23\t25.102634\t?5\t1\t1\t1\t20\t14\t727\t1469\t35\t31\t82.718132\t夠5\t1\t1\t1\t20\t15\t766\t1485\t6\t6\t49.104019\t*5\t1\t1\t1\t20\t16\t791\t1470\t30\t30\t92.025757\t平5\t1\t1\t1\t20\t17\t821\t1467\t27\t35\t48.819881\t55\t1\t1\t1\t20\t18\t867\t1474\t7\t23\t93.194557\t等5\t1\t1\t1\t20\t19\t877\t1485\t5\t5\t77.878967\t?5\t1\t1\t1\t20\t20\t896\t1467\t23\t35\t81.107567\t參5\t1\t1\t1\t20\t21\t926\t1473\t6\t25\t47.253235\t#5\t1\t1\t1\t20\t22\t956\t1468\t31\t32\t92.593285\t與5\t1\t1\t1\t20\t23\t988\t1469\t165\t32\t50.788570\t學",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 19,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_311_line_21",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_311_line_21.png",
+      "bbox": [
+        928,
+        1612,
+        1270,
+        1710
+      ],
+      "ocr_text": "紅 襄 訓 廬 啟 訓 襄 計生 h 議",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 21,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_322_line_22",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_322_line_22.png",
+      "bbox": [
+        783,
+        1700,
+        1458,
+        1820
+      ],
+      "ocr_text": "四 ^、 過 多 學 可 5 以 ~ 怎麼 # 做?",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 22,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_335_line_23",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_335_line_23.png",
+      "bbox": [
+        235,
+        1796,
+        1448,
+        1920
+      ],
+      "ocr_text": "@ 成 為 * 溫 * 暖 1 的 # 小 # 幫 : 手 人",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 23,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_352_line_24",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_352_line_24.png",
+      "bbox": [
+        182,
+        1830,
+        757,
+        1967
+      ],
+      "ocr_text": "全 謂 和 和 mi",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 24,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_358_line_25",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_358_line_25.png",
+      "bbox": [
+        122,
+        1853,
+        721,
+        2055
+      ],
+      "ocr_text": "1 寫 汪 人 過",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 25,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_364_line_26",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_364_line_26.png",
+      "bbox": [
+        283,
+        1940,
+        1040,
+        2059
+      ],
+      "ocr_text": "一 有 本 只 主, 動 : 詢問 #",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 26,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_374_line_27",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_374_line_27.png",
+      "bbox": [
+        118,
+        1980,
+        720,
+        2128
+      ],
+      "ocr_text": "維 才 發 和 eg",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 27,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_380_line_28",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_380_line_28.png",
+      "bbox": [
+        271,
+        2044,
+        1145,
+        2306
+      ],
+      "ocr_text": "1 說 | 協助 光 使 / 用 和 , 設 # 施 /",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 28,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_395_line_29",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_395_line_29.png",
+      "bbox": [
+        260,
+        2145,
+        1261,
+        2320
+      ],
+      "ocr_text": "1 一 - 起 ‧ 玩 #、 一 - 起 * 參 ; 與 +",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 29,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_411_line_30",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_411_line_30.png",
+      "bbox": [
+        256,
+        2222,
+        566,
+        2343
+      ],
+      "ocr_text": "AA",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 30,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_413_line_31",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_413_line_31.png",
+      "bbox": [
+        139,
+        2236,
+        751,
+        2388
+      ],
+      "ocr_text": "噴 / 人 全 、 號",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 31,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_420_line_32",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_420_line_32.png",
+      "bbox": [
+        964,
+        2367,
+        1581,
+        2464
+      ],
+      "ocr_text": "間 人 tt",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 32,
+      "status": "visual_region_needs_zhuyin_recognition"
+    },
+    {
+      "id": "region_424_line_33",
+      "source_image": "page22_3x.png",
+      "crop_path": "artifacts/page22_regions/region_424_line_33.png",
+      "bbox": [
+        863,
+        2418,
+        974,
+        2520
+      ],
+      "ocr_text": "22",
+      "ocr_confidence": -1.0,
+      "block_num": 1,
+      "par_num": 1,
+      "line_num": 33,
+      "status": "visual_region_needs_zhuyin_recognition"
+    }
+  ]
+}

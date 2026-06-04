@@ -88,6 +88,24 @@ Example output:
 
 Conclusion: Apple Vision is useful as a quick local OCR sanity check, but not sufficient for full zhuyin verification.
 
+## Known Ground Truth
+
+The user later clarified that the real known issue on page 22 is not `心理方面`.
+
+Correct target:
+
+```text
+Page: 22
+Phrase: 成為
+Problem character: 為
+Expected phrase zhuyin: ㄔㄥˊ ㄨㄟˊ
+Issue: the printed zhuyin for 為 is wrong
+```
+
+This is the first regression target for the project. Future work should treat
+`成為` as the known positive case and should not optimize for the earlier
+`心理方面` guess.
+
 ## Manual Visual Check
 
 The page was rendered at 3x and cropped/zoomed for visual inspection.
@@ -100,7 +118,7 @@ debug_crops/page22_title_xinlifangmian_zoom.png
 debug_crops/page22_traits_zoom.png
 ```
 
-Observed candidate issue:
+Earlier incorrect candidate:
 
 ```text
 Page: 22
@@ -111,6 +129,9 @@ Expected MOE zhuyin: ㄇㄧㄢˋ
 Suspicion: the printed tone mark beside 面 appears inconsistent with fourth tone.
 Status: suspected, needs confirmation by better zhuyin OCR or human review.
 ```
+
+This was a wrong target. It is retained here only as evidence that visual/manual
+inspection and general OCR are not reliable enough for this task.
 
 Related MOE URL:
 
@@ -132,37 +153,97 @@ It did produce a useful engineering result:
 
 1. The PDF has no text layer.
 2. Local general-purpose OCR cannot reliably read the small zhuyin.
-3. The likely known issue can be narrowed visually to the title phrase `心理方面`, especially the tone on `面`.
+3. The actual known issue is `成為` / `為`, not the earlier `心理方面` guess.
 4. Page 22 should become the first regression target for the real OCR/zhuyin pipeline.
+
+## Region Extraction Result
+
+Added:
+
+```text
+scripts/extract_page_regions.py
+```
+
+Purpose:
+
+```text
+Render page image
+-> use OCR only to find rough text-line regions
+-> crop visual regions that contain both Chinese text and nearby zhuyin
+-> save JSON metadata and PNG crops
+```
+
+This does not solve zhuyin recognition yet. It creates the data needed for the
+next step: training a zhuyin-specific classifier.
+
+Command:
+
+```bash
+.venv/bin/python scripts/extract_page_regions.py page22_3x.png \
+  --output-dir artifacts/page22_regions \
+  --json-output artifacts/page22_regions.json \
+  --padding 40
+```
+
+Observed output:
+
+```text
+regions=32
+```
+
+The line containing the known issue was extracted:
+
+```text
+artifacts/page22_regions/region_335_line_23.png
+```
+
+Tesseract noisy text for that line:
+
+```text
+@ 成 為 * 溫 * 暖 1 的 # 小 # 幫 : 手 人
+```
+
+Important interpretation:
+
+- The OCR can roughly find the line and the text `成 為`.
+- The zhuyin is not recognized as zhuyin. It appears as `*`, `1`, `#`, `:`, etc.
+- Therefore the next step must be a zhuyin-specific classifier, not another pass of generic OCR.
+
+Focused crop for weekend research:
+
+```text
+artifacts/page22_regions/target_chengwei.png
+```
+
+This crop should be used to test whether the project can identify the zhuyin
+beside `為` and compare it with the expected `ㄨㄟˊ`.
 
 ## Recommended Next Step
 
 Do not continue with plain Tesseract or Apple Vision as the final OCR engine.
 
-Next implementation should test a stronger OCR path against page 22:
+Next implementation should switch to a zhuyin-specific OCR/classifier path:
 
 1. Render page 22 at 3x or 4x.
 2. Segment text lines and zhuyin regions separately.
-3. Try OCR with one of:
-   - Google Cloud Vision
-   - Azure AI Vision
-   - PaddleOCR with a Traditional Chinese model
-   - a custom zhuyin classifier for cropped annotation glyphs
-4. Use `心理方面` as a known target:
-   - expected: `ㄒㄧㄣ ㄌㄧˇ ㄈㄤ ㄇㄧㄢˋ`
-   - candidate mismatch: tone on `面`
-5. Emit a report row only when the OCR confidence for the zhuyin mark is high enough.
+3. Build a labeled dataset of cropped zhuyin glyphs.
+4. Train or prototype:
+   - template matching for this PDF/font
+   - small CNN classifier for zhuyin symbols and tone marks
+5. Use `成為` as the known target:
+   - expected: `ㄔㄥˊ ㄨㄟˊ`
+   - target character: `為`
+6. Emit a report row only when the classifier confidence for the zhuyin mark is high enough.
 
 Expected report row shape:
 
 ```json
 {
   "page": 22,
-  "candidate_text": "心理方面",
-  "pdf_zhuyin": "ㄒㄧㄣ ㄌㄧˇ ㄈㄤ ㄇㄧㄢ?",
-  "moe_zhuyin": "ㄒㄧㄣ ㄌㄧˇ ㄈㄤ ㄇㄧㄢˋ",
+  "candidate_text": "成為",
+  "pdf_zhuyin": "ㄔㄥˊ ㄨㄟˋ",
+  "moe_zhuyin": "ㄔㄥˊ ㄨㄟˊ",
   "status": "suspected_error",
-  "reason": "tone_mismatch_on_面",
-  "source_url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=36075&word=%E6%96%B9%E9%9D%A2"
+  "reason": "tone_mismatch_on_為"
 }
 ```
