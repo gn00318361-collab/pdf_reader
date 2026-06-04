@@ -101,6 +101,157 @@ image_only_pages: 44
 
 注音符號類別少，遠比中文字 OCR 容易。若只針對同一批教材、同一種字型與排版，模板比對或小型 CNN 都可能很快看到效果。
 
+## 獨立 Repo：合成注音資料與訓練
+
+建議另開一個 private repo，專門處理「合成資料產生、標註資料管理、模型訓練、Windows 5080 訓練環境」。不要把它混進這個 PDF 校稿 repo。
+
+原因：
+
+- 這個 repo 應保持為 PDF 診斷、crop、benchmark、校稿 pipeline。
+- 合成資料 repo 會有大量圖片、模型權重、訓練設定、GPU 環境檔，檔案型態和變更頻率完全不同。
+- 未來若模型可用，只要把 inference artifact 接回本 repo 即可。
+
+建議 repo 名稱：
+
+```text
+zhuyin-ocr-lab
+```
+
+備選名稱：
+
+```text
+bopomofo-vision-lab
+zhuyin-crop-recognizer
+bopomofo-ocr-training
+```
+
+建議 GitHub description：
+
+```text
+Synthetic data generation and model training experiments for recognizing printed Bopomofo/Zhuyin crops in Taiwanese educational PDFs.
+```
+
+### 新 repo 的目標
+
+這個新 repo 不做 PDF 校稿產品，不做教育部查詢，不做完整整頁 OCR。它只回答：
+
+```text
+給一張「單字 + 右側注音」或「字旁注音」crop，能不能讀出 PDF 實際印出的注音？
+```
+
+### 可以使用 esun-ai/bopomofo 的位置
+
+`esun-ai/bopomofo` 是注音標註系統，適合提供：
+
+```text
+中文字 / 詞語 / 句子 -> 正確注音
+```
+
+它不是圖片 OCR，但可以拿來產生合成資料的標準答案：
+
+```text
+中文句子
+-> esun-ai/bopomofo 產生注音
+-> 用 HTML/CSS 或 DOCX 渲染成右側直排注音圖片
+-> 輸出 crop + label
+-> 訓練 printed_zhuyin recognizer
+```
+
+注意授權：
+
+- `esun-ai/bopomofo` README 說明其為 E.SUN Bank 的注音標註系統，使用 AI 自動為文章選擇準確注音，並提供 Word/純文字輸出。
+- 其 LICENSE 是 LGPL 2.1。
+- 若後續商用或把它包進產品，需要先做授權合規確認。
+
+### 合成資料策略
+
+合成資料要模擬廠商 PDF 排版：
+
+```text
+中文字較大
+注音在右側
+注音直向排列
+聲調符號非常小
+輸出後加上模糊、壓縮、縮放、背景雜訊
+```
+
+資料 label 必須分開：
+
+```text
+printed_zhuyin = 圖片上實際印出的注音，用於訓練 OCR
+expected_zhuyin = 標準注音，用於校稿比對
+```
+
+合成資料可以大量產生：
+
+```json
+{
+  "crop_id": "synthetic_000001",
+  "char": "為",
+  "word_context": "成為",
+  "printed_zhuyin": "ㄨㄟˋ",
+  "expected_zhuyin": "ㄨㄟˊ",
+  "status": "error",
+  "image_path": "dataset/synthetic/raw/synthetic_000001.png"
+}
+```
+
+### 新 repo 起步範圍
+
+第一個 milestone：
+
+```text
+1. 建立 synthetic dataset generator
+2. 產生 1,000-10,000 張單字+右側注音 crop
+3. 產生 labels.csv / metadata.json
+4. 加入真實 PDF crop：p22_wei_001
+5. 建立 baseline classifier 訓練腳本
+6. 在 Windows 5080 上確認能跑一輪 train/val
+```
+
+第一個成功標準：
+
+```text
+模型能在 held-out synthetic crops 上讀出注音。
+模型能對 p22_wei_001 輸出候選注音或至少輸出 tone confidence。
+```
+
+### 建議新 repo 結構
+
+```text
+zhuyin-ocr-lab/
+  README.md
+  pyproject.toml
+  configs/
+    synthetic.yaml
+    train_classifier.yaml
+  src/
+    zhuyin_ocr_lab/
+      synth/
+        render_html.py
+        generate_dataset.py
+      data/
+        dataset.py
+        transforms.py
+      models/
+        classifier.py
+      train.py
+      eval.py
+      infer.py
+  dataset/
+    synthetic/
+    real/
+    labels/
+  artifacts/
+    runs/
+    checkpoints/
+  docs/
+    windows-5080-setup.md
+    synthetic-data-plan.md
+```
+
+本 repo 會繼續保留真實 PDF crop、page22 benchmark 和 annotation CSV；新 repo 負責大量合成資料與訓練。
+
 ## Page 22 Benchmark 計畫
 
 第一個任務不是訓練模型，而是建立可重複 benchmark。
