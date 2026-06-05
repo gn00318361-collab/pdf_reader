@@ -58,8 +58,8 @@ def build_scored_review() -> Path:
             f"<td class=\"bpmf\">{esc(item.get('expected_bopomofo') or '待判斷')}</td>"
             f"<td>{esc(matched_pattern)}</td>"
             f"<td>{esc(classifier_status)}</td>"
-            f"<td>{esc(item.get('reason'))}</td>"
-            f"<td>{esc(item.get('region_text'))}</td>"
+            f"<td class=\"reason-cell\">{esc(item.get('reason'))}</td>"
+            f"<td class=\"region-cell\">{esc(item.get('region_text'))}</td>"
             f"<td><a href=\"{image_link}\" target=\"_blank\" rel=\"noopener noreferrer\">annotated</a></td>"
             "</tr>"
         )
@@ -219,6 +219,7 @@ def build_scored_review() -> Path:
       width: 100%;
       border-collapse: collapse;
       background: var(--panel);
+      table-layout: fixed;
     }}
     th, td {{
       padding: 10px 12px;
@@ -289,7 +290,9 @@ def build_scored_review() -> Path:
     .phrase {{
       font-size: 18px;
       font-weight: 700;
-      white-space: nowrap;
+      white-space: normal;
+      word-break: keep-all;
+      line-height: 1.35;
     }}
     .bpmf {{
       font-size: 18px;
@@ -309,6 +312,23 @@ def build_scored_review() -> Path:
     .low {{ color: var(--low); }}
     .unresolved {{ color: var(--unresolved); }}
     a {{ color: var(--link); }}
+    .priority-col {{ width: 88px; }}
+    .status-col {{ width: 138px; }}
+    .page-col {{ width: 44px; }}
+    .token-col {{ width: 64px; }}
+    .phrase-col {{ width: 160px; }}
+    .char-col {{ width: 58px; }}
+    .bpmf-col {{ width: 92px; }}
+    .rule-col {{ width: 92px; }}
+    .classifier-col {{ width: 138px; }}
+    .reason-col {{ width: 260px; }}
+    .region-col {{ width: 300px; }}
+    .link-col {{ width: 82px; }}
+    .reason-cell,
+    .region-cell {{
+      line-height: 1.45;
+      word-break: break-word;
+    }}
   </style>
 </head>
 <body>
@@ -368,19 +388,19 @@ def build_scored_review() -> Path:
           <tr>
             <th class="check-cell" title="已檢查">✓</th>
             <th class="check-cell" title="有錯/需修正">!</th>
-            <th>優先級</th>
-            <th>狀態</th>
-            <th>頁碼</th>
-            <th>區塊 ID</th>
-            <th>詞級截圖</th>
-            <th>候選短語</th>
-            <th>多音字</th>
-            <th>推估注音</th>
-            <th>規則</th>
-            <th>分類狀態</th>
-            <th>原因</th>
-            <th>OCR region</th>
-            <th>標記圖</th>
+            <th class="priority-col">優先級</th>
+            <th class="status-col">狀態</th>
+            <th class="page-col">頁碼</th>
+            <th class="token-col">區塊 ID</th>
+            <th class="thumb-cell">詞級截圖</th>
+            <th class="phrase-col">候選短語</th>
+            <th class="char-col">多音字</th>
+            <th class="bpmf-col">推估注音</th>
+            <th class="rule-col">規則</th>
+            <th class="classifier-col">分類狀態</th>
+            <th class="reason-col">原因</th>
+            <th class="region-col">OCR region</th>
+            <th class="link-col">標記圖</th>
           </tr>
         </thead>
         <tbody id="pendingBody">{body}</tbody>
@@ -397,19 +417,19 @@ def build_scored_review() -> Path:
             <tr>
               <th class="check-cell" title="已檢查">✓</th>
               <th class="check-cell" title="有錯/需修正">!</th>
-              <th>優先級</th>
-              <th>狀態</th>
-              <th>頁碼</th>
-              <th>區塊 ID</th>
-              <th>詞級截圖</th>
-              <th>候選短語</th>
-              <th>多音字</th>
-              <th>推估注音</th>
-              <th>規則</th>
-              <th>分類狀態</th>
-              <th>原因</th>
-              <th>OCR region</th>
-              <th>標記圖</th>
+              <th class="priority-col">優先級</th>
+              <th class="status-col">狀態</th>
+              <th class="page-col">頁碼</th>
+              <th class="token-col">區塊 ID</th>
+              <th class="thumb-cell">詞級截圖</th>
+              <th class="phrase-col">候選短語</th>
+              <th class="char-col">多音字</th>
+              <th class="bpmf-col">推估注音</th>
+              <th class="rule-col">規則</th>
+              <th class="classifier-col">分類狀態</th>
+              <th class="reason-col">原因</th>
+              <th class="region-col">OCR region</th>
+              <th class="link-col">標記圖</th>
             </tr>
           </thead>
           <tbody id="issueBody">
@@ -428,19 +448,19 @@ def build_scored_review() -> Path:
             <tr>
               <th class="check-cell" title="已檢查">✓</th>
               <th class="check-cell" title="有錯/需修正">!</th>
-              <th>優先級</th>
-              <th>狀態</th>
-              <th>頁碼</th>
-              <th>區塊 ID</th>
-              <th>詞級截圖</th>
-              <th>候選短語</th>
-              <th>多音字</th>
-              <th>推估注音</th>
-              <th>規則</th>
-              <th>分類狀態</th>
-              <th>原因</th>
-              <th>OCR region</th>
-              <th>標記圖</th>
+              <th class="priority-col">優先級</th>
+              <th class="status-col">狀態</th>
+              <th class="page-col">頁碼</th>
+              <th class="token-col">區塊 ID</th>
+              <th class="thumb-cell">詞級截圖</th>
+              <th class="phrase-col">候選短語</th>
+              <th class="char-col">多音字</th>
+              <th class="bpmf-col">推估注音</th>
+              <th class="rule-col">規則</th>
+              <th class="classifier-col">分類狀態</th>
+              <th class="reason-col">原因</th>
+              <th class="region-col">OCR region</th>
+              <th class="link-col">標記圖</th>
             </tr>
           </thead>
           <tbody id="checkedBody">
