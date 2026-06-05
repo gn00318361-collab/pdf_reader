@@ -142,3 +142,24 @@ outputs/review/corpus_summary.md
 - 不重複上下文候選：464
 
 這些候選還不是最終審稿清單，而是下一步做詞級判斷、規則/LLM 排序與精準 crop 的原始材料。
+
+## 詞級候選 Dashboard
+
+建立 corpus index 後，可以產生詞級多音字候選與對應截圖：
+
+```powershell
+python src\build_phrase_index.py --left 2 --right 2
+python src\build_phrase_review.py
+```
+
+輸出包含：
+
+```text
+outputs/review/phrase_occurrences.json
+outputs/review/phrase_terms.json
+outputs/review/phrase_summary.md
+outputs/review/phrase_review.html
+outputs/review/phrase_crops/
+```
+
+`phrase_review.html` 會列出每個多音字 occurrence 的估算詞級 crop、候選短語、可能讀音與原 OCR region，並提供搜尋篩選與深色模式。這一層仍是候選整理，不是最終自動判錯。

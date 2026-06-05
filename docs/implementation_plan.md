@@ -254,3 +254,21 @@ python src\build_corpus_index.py --pages "1,4,5,13,15,16-27,30-42" --radius 4
 4. `outputs/review/corpus_summary.md`：人工快速閱讀摘要。
 
 下一步應基於這些實際出現的上下文，產生更精準的詞級候選，而不是盲目擴充全中文世界的破音詞庫。
+
+## 詞級候選整理
+
+在 `char_index.json` 產生後，可建立詞級候選：
+
+```powershell
+python src\build_phrase_index.py --left 2 --right 2
+python src\build_phrase_review.py
+```
+
+輸出：
+
+1. `outputs/review/phrase_occurrences.json`：每個多音字 occurrence 的候選短語、估算詞級 bbox、截圖路徑。
+2. `outputs/review/phrase_terms.json`：依候選短語聚合後的統計。
+3. `outputs/review/phrase_summary.md`：高頻候選短語摘要。
+4. `outputs/review/phrase_review.html`：可搜尋、可切換深色模式的詞級候選 dashboard。
+
+目前詞級 bbox 是根據 OCR region 與字元位置比例估算，目的是比整行框更方便人工檢查；它不是獨立模型偵測出的真實詞框。

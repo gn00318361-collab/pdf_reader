@@ -9,6 +9,7 @@ outputs/review/*.json
 outputs/review/*.html
 outputs/review/*.md
 outputs/review/crops/
+outputs/review/phrase_crops/
 
 !outputs/pages/.gitkeep
 !outputs/ocr/.gitkeep
