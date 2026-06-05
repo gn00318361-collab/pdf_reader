@@ -395,3 +395,18 @@ python src\build_scored_review.py
 7. `semantic_unresolved`：23
 
 這一層沒有看圖片，也沒有自動確認 PDF 上印出的注音是否正確。它只根據中文 context 補上「理論正確讀音」與 reason，最後仍由 dashboard 讓人工看 crop / annotated page 做確認。
+
+### Review state / issue handoff
+
+dashboard 的人工標記分成兩種：
+
+1. `檢查`：人工看過，移到 Checked 區塊。
+2. `有錯`：疑似注音錯或需要修正，紅色 highlight 並移到 Issues 區塊。
+
+標記會先存在瀏覽器 `localStorage`，避免重新整理後消失。若要交接給朋友或另一個 Codex，可使用 dashboard 的 `匯出標記` 下載 `review_state.json`，再把內容更新到 repo 中的：
+
+```text
+data/review_state.json
+```
+
+這份檔案的 schema 是 `pdf_reader_review_state.v1`，包含 `reviewed_ids`、`issue_ids` 與 `issues` 明細。對方可以直接讀 JSON，或在 dashboard 使用 `匯入標記` 載回狀態，快速定位被標記的頁碼、區塊、候選短語與原因。

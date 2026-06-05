@@ -1,0 +1,8 @@
+{
+  "schema": "pdf_reader_review_state.v1",
+  "exported_at": null,
+  "source": "scored_review.html",
+  "reviewed_ids": [],
+  "issue_ids": [],
+  "issues": []
+}

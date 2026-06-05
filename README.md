@@ -255,3 +255,24 @@ outputs/review/scored_review.html
 - 來源分布：202 筆既有規則、248 筆 semantic classifier 補判、23 筆保留人工判斷
 
 人工審稿時可先在 dashboard 用 status filter 看 `semantic_unresolved`，確認這 23 筆最不確定的候選；再依 high / medium 優先級往下審。
+
+## 人工標記狀態
+
+`scored_review.html` 目前支援兩種人工標記：
+
+1. `檢查`：代表該列已人工看過，會移到 Checked 區塊。
+2. `有錯`：代表該列疑似注音錯誤或需要修正，會紅色 highlight 並移到 Issues 區塊。
+
+這些標記會先存在瀏覽器的 `localStorage`，因此同一台電腦同一個瀏覽器重新整理後仍會保留。若要交給朋友或另一個 Codex thread，可按 dashboard 上的 `匯出標記` 下載 `review_state.json`。repo 內也保留一份可提交的狀態檔：
+
+```text
+data/review_state.json
+```
+
+把匯出的內容更新到這個檔案並 commit/push 後，朋友或對方 Codex 就能看到：
+
+- 哪些 `char_occurrence_id` 已檢查
+- 哪些被標成 issue
+- issue 對應頁碼、區塊、候選短語、預期注音、原因與 OCR region
+
+dashboard 也提供 `匯入標記`，可把這份 JSON 載回瀏覽器繼續審。

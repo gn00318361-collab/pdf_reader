@@ -47,6 +47,7 @@ def build_scored_review() -> Path:
             f"<tr data-status=\"{esc(status)}\" data-priority=\"{esc(priority)}\" "
             f"data-review-id=\"{esc(review_id)}\" data-order=\"{index}\">"
             f"<td class=\"check-cell\"><input class=\"row-check\" type=\"checkbox\" aria-label=\"標記已檢查\"></td>"
+            f"<td class=\"check-cell\"><input class=\"issue-check\" type=\"checkbox\" aria-label=\"標記有錯或需修正\"></td>"
             f"<td><span class=\"pill {esc(priority)}\">{esc(priority)}</span></td>"
             f"<td>{esc(status)}</td>"
             f"<td>{esc(item.get('page'))}</td>"
@@ -63,7 +64,7 @@ def build_scored_review() -> Path:
             "</tr>"
         )
 
-    body = "\n".join(rows) or "<tr><td colspan=\"14\">目前沒有候選。</td></tr>"
+    body = "\n".join(rows) or "<tr><td colspan=\"15\">目前沒有候選。</td></tr>"
     output = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -88,6 +89,9 @@ def build_scored_review() -> Path:
       --medium: #a16207;
       --low: #166534;
       --unresolved: #475569;
+      --issue-bg: #fff1f2;
+      --issue-border: #e11d48;
+      --issue-text: #be123c;
     }}
     [data-theme="dark"] {{
       color-scheme: dark;
@@ -106,6 +110,9 @@ def build_scored_review() -> Path:
       --medium: #facc15;
       --low: #86efac;
       --unresolved: #cbd5e1;
+      --issue-bg: #351820;
+      --issue-border: #fb7185;
+      --issue-text: #fda4af;
     }}
     body {{
       margin: 0;
@@ -139,7 +146,7 @@ def build_scored_review() -> Path:
       align-items: center;
       flex-wrap: wrap;
     }}
-    .theme-toggle, .page-button, input, select {{
+    .theme-toggle, .page-button, .state-button, input, select {{
       border: 1px solid var(--border);
       background: var(--button-bg);
       color: var(--text);
@@ -147,11 +154,11 @@ def build_scored_review() -> Path:
       border-radius: 6px;
       font-size: 14px;
     }}
-    .theme-toggle, .page-button {{
+    .theme-toggle, .page-button, .state-button {{
       cursor: pointer;
       white-space: nowrap;
     }}
-    .theme-toggle:hover, .page-button:hover:not(:disabled) {{
+    .theme-toggle:hover, .page-button:hover:not(:disabled), .state-button:hover {{
       background: var(--button-hover);
     }}
     .page-button:disabled {{
@@ -235,11 +242,14 @@ def build_scored_review() -> Path:
       width: 44px;
       text-align: center;
     }}
-    .row-check {{
+    .row-check, .issue-check {{
       width: 18px;
       height: 18px;
       accent-color: var(--link);
       cursor: pointer;
+    }}
+    .issue-check {{
+      accent-color: var(--issue-border);
     }}
     .checked-row {{
       opacity: 0.55;
@@ -248,6 +258,14 @@ def build_scored_review() -> Path:
     .checked-row .phrase,
     .checked-row .bpmf {{
       color: var(--muted);
+    }}
+    .issue-row {{
+      background: var(--issue-bg);
+      box-shadow: inset 4px 0 0 var(--issue-border);
+    }}
+    .issue-row .phrase,
+    .issue-row .bpmf {{
+      color: var(--issue-text);
     }}
     .empty-row td {{
       color: var(--muted);
@@ -294,7 +312,8 @@ def build_scored_review() -> Path:
       <h1>詞級候選判讀清單</h1>
       <div class="summary">
         <span>待審顯示：<span id="visibleCount">{len(candidates)}</span> / <span id="pendingCount">{len(candidates)}</span></span>
-        <span>已檢查：<span id="checkedCount">0</span></span>
+        <span>已檢查 OK：<span id="checkedCount">0</span></span>
+        <span>有錯/需修正：<span id="issueCount">0</span></span>
       </div>
     </div>
     <div class="controls">
@@ -314,6 +333,9 @@ def build_scored_review() -> Path:
         <option value="unresolved">unresolved</option>
       </select>
       <button class="theme-toggle" type="button" id="themeToggle">切換深色</button>
+      <button class="state-button" type="button" id="exportState">匯出標記</button>
+      <label class="state-button" for="importState">匯入標記</label>
+      <input id="importState" type="file" accept="application/json,.json" hidden>
     </div>
   </header>
   <main>
@@ -340,6 +362,7 @@ def build_scored_review() -> Path:
         <thead>
           <tr>
             <th>檢查</th>
+            <th>有錯</th>
             <th>優先級</th>
             <th>狀態</th>
             <th>頁碼</th>
@@ -361,13 +384,45 @@ def build_scored_review() -> Path:
     </section>
     <section class="review-section">
       <div class="section-title">
-        <h2>Checked</h2>
+        <h2>Issues</h2>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>檢查</th>
+              <th>有錯</th>
+              <th>優先級</th>
+              <th>狀態</th>
+              <th>頁碼</th>
+              <th>區塊 ID</th>
+              <th>詞級截圖</th>
+              <th>候選短語</th>
+              <th>多音字</th>
+              <th>推估注音</th>
+              <th>規則</th>
+              <th>分類狀態</th>
+              <th>原因</th>
+              <th>OCR region</th>
+              <th>標記圖</th>
+            </tr>
+          </thead>
+          <tbody id="issueBody">
+            <tr class="empty-row" id="issueEmpty"><td colspan="15">尚未標記任何錯誤。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="review-section">
+      <div class="section-title">
+        <h2>Checked / OK</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>檢查</th>
+              <th>有錯</th>
               <th>優先級</th>
               <th>狀態</th>
               <th>頁碼</th>
@@ -384,7 +439,7 @@ def build_scored_review() -> Path:
             </tr>
           </thead>
           <tbody id="checkedBody">
-            <tr class="empty-row" id="checkedEmpty"><td colspan="14">尚未勾選任何項目。</td></tr>
+            <tr class="empty-row" id="checkedEmpty"><td colspan="15">尚未勾選任何項目。</td></tr>
           </tbody>
         </table>
       </div>
@@ -413,16 +468,25 @@ def build_scored_review() -> Path:
     const visibleCount = document.getElementById("visibleCount");
     const pendingCount = document.getElementById("pendingCount");
     const checkedCount = document.getElementById("checkedCount");
+    const issueCount = document.getElementById("issueCount");
     const pendingBody = document.getElementById("pendingBody");
+    const issueBody = document.getElementById("issueBody");
     const checkedBody = document.getElementById("checkedBody");
+    const issueEmpty = document.getElementById("issueEmpty");
     const checkedEmpty = document.getElementById("checkedEmpty");
     const storageKey = "scored-review-checked-ids";
+    const issueStorageKey = "scored-review-issue-ids";
     const rows = Array.from(document.querySelectorAll("#pendingBody tr[data-review-id]"));
     const checkedIds = new Set(JSON.parse(localStorage.getItem(storageKey) || "[]"));
+    const issueIds = new Set(JSON.parse(localStorage.getItem(issueStorageKey) || "[]"));
     let currentPage = 1;
 
     function saveChecked() {{
       localStorage.setItem(storageKey, JSON.stringify(Array.from(checkedIds)));
+    }}
+
+    function saveIssues() {{
+      localStorage.setItem(issueStorageKey, JSON.stringify(Array.from(issueIds)));
     }}
 
     function sortRows(tbody) {{
@@ -435,25 +499,60 @@ def build_scored_review() -> Path:
     function updateCounts() {{
       const pendingRows = Array.from(pendingBody.querySelectorAll("tr[data-review-id]"));
       const checkedRows = Array.from(checkedBody.querySelectorAll("tr[data-review-id]"));
+      const issueRows = Array.from(issueBody.querySelectorAll("tr[data-review-id]"));
       pendingCount.textContent = pendingRows.length;
       checkedCount.textContent = checkedRows.length;
+      issueCount.textContent = issueRows.length;
       checkedEmpty.style.display = checkedRows.length ? "none" : "";
+      issueEmpty.style.display = issueRows.length ? "none" : "";
     }}
 
     function setRowChecked(row, checked) {{
       const checkbox = row.querySelector(".row-check");
       checkbox.checked = checked;
-      row.classList.toggle("checked-row", checked);
+      row.classList.toggle("checked-row", checked && !issueIds.has(row.dataset.reviewId));
       if (checked) {{
         checkedIds.add(row.dataset.reviewId);
-        checkedBody.appendChild(row);
-        sortRows(checkedBody);
+        if (!issueIds.has(row.dataset.reviewId)) {{
+          checkedBody.appendChild(row);
+          sortRows(checkedBody);
+        }}
       }} else {{
         checkedIds.delete(row.dataset.reviewId);
-        pendingBody.appendChild(row);
-        sortRows(pendingBody);
+        if (!issueIds.has(row.dataset.reviewId)) {{
+          pendingBody.appendChild(row);
+          sortRows(pendingBody);
+        }}
       }}
       saveChecked();
+      updateCounts();
+      applyFilters();
+    }}
+
+    function setRowIssue(row, issue) {{
+      const issueCheckbox = row.querySelector(".issue-check");
+      const reviewCheckbox = row.querySelector(".row-check");
+      issueCheckbox.checked = issue;
+      row.classList.toggle("issue-row", issue);
+      row.classList.toggle("checked-row", !issue && checkedIds.has(row.dataset.reviewId));
+      if (issue) {{
+        issueIds.add(row.dataset.reviewId);
+        checkedIds.add(row.dataset.reviewId);
+        reviewCheckbox.checked = true;
+        issueBody.appendChild(row);
+        sortRows(issueBody);
+      }} else {{
+        issueIds.delete(row.dataset.reviewId);
+        if (checkedIds.has(row.dataset.reviewId)) {{
+          checkedBody.appendChild(row);
+          sortRows(checkedBody);
+        }} else {{
+          pendingBody.appendChild(row);
+          sortRows(pendingBody);
+        }}
+      }}
+      saveChecked();
+      saveIssues();
       updateCounts();
       applyFilters();
     }}
@@ -480,8 +579,15 @@ def build_scored_review() -> Path:
 
     for (const row of rows) {{
       const checkbox = row.querySelector(".row-check");
+      const issueCheckbox = row.querySelector(".issue-check");
       checkbox.addEventListener("change", () => setRowChecked(row, checkbox.checked));
-      if (checkedIds.has(row.dataset.reviewId)) {{
+      issueCheckbox.addEventListener("change", () => setRowIssue(row, issueCheckbox.checked));
+      if (issueIds.has(row.dataset.reviewId)) {{
+        issueCheckbox.checked = true;
+        checkbox.checked = true;
+        row.classList.add("issue-row");
+        issueBody.appendChild(row);
+      }} else if (checkedIds.has(row.dataset.reviewId)) {{
         checkbox.checked = true;
         row.classList.add("checked-row");
         checkedBody.appendChild(row);
@@ -514,6 +620,86 @@ def build_scored_review() -> Path:
     priorityFilter.addEventListener("change", resetToFirstPage);
     statusFilter.addEventListener("change", resetToFirstPage);
     pageSizeSelect.addEventListener("change", resetToFirstPage);
+    function rowPayload(row) {{
+      const cells = Array.from(row.querySelectorAll("td")).map(cell => cell.textContent.trim());
+      return {{
+        id: row.dataset.reviewId,
+        priority: row.dataset.priority,
+        status: row.dataset.status,
+        page: cells[4],
+        region_id: cells[5],
+        candidate_phrase: cells[7],
+        char: cells[8],
+        expected_bopomofo: cells[9],
+        matched_pattern: cells[10],
+        classifier_status: cells[11],
+        reason: cells[12],
+        region_text: cells[13],
+      }};
+    }}
+
+    function exportReviewState() {{
+      const allRows = Array.from(document.querySelectorAll("tr[data-review-id]"));
+      const payload = {{
+        schema: "pdf_reader_review_state.v1",
+        exported_at: new Date().toISOString(),
+        source: "scored_review.html",
+        reviewed_ids: Array.from(checkedIds),
+        issue_ids: Array.from(issueIds),
+        issues: allRows.filter(row => issueIds.has(row.dataset.reviewId)).map(rowPayload),
+      }};
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {{ type: "application/json" }});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "review_state.json";
+      link.click();
+      URL.revokeObjectURL(url);
+    }}
+
+    function importReviewState(file) {{
+      const reader = new FileReader();
+      reader.onload = () => {{
+        const payload = JSON.parse(String(reader.result || "{{}}"));
+        checkedIds.clear();
+        issueIds.clear();
+        for (const id of payload.reviewed_ids || []) checkedIds.add(id);
+        for (const id of payload.issue_ids || []) issueIds.add(id);
+        for (const row of rows) {{
+          row.classList.remove("checked-row", "issue-row");
+          row.querySelector(".row-check").checked = false;
+          row.querySelector(".issue-check").checked = false;
+          pendingBody.appendChild(row);
+        }}
+        for (const row of rows) {{
+          if (issueIds.has(row.dataset.reviewId)) {{
+            row.querySelector(".issue-check").checked = true;
+            row.querySelector(".row-check").checked = true;
+            row.classList.add("issue-row");
+            issueBody.appendChild(row);
+          }} else if (checkedIds.has(row.dataset.reviewId)) {{
+            row.querySelector(".row-check").checked = true;
+            row.classList.add("checked-row");
+            checkedBody.appendChild(row);
+          }}
+        }}
+        sortRows(pendingBody);
+        sortRows(issueBody);
+        sortRows(checkedBody);
+        saveChecked();
+        saveIssues();
+        updateCounts();
+        resetToFirstPage();
+      }};
+      reader.readAsText(file);
+    }}
+
+    document.getElementById("exportState").addEventListener("click", exportReviewState);
+    document.getElementById("importState").addEventListener("change", event => {{
+      const file = event.target.files && event.target.files[0];
+      if (file) importReviewState(file);
+      event.target.value = "";
+    }});
     prevPage.addEventListener("click", () => {{
       currentPage -= 1;
       applyFilters();
