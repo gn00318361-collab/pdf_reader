@@ -287,7 +287,7 @@ python src\build_scored_review.py
 1. `outputs/review/scored_phrase_candidates.json`：所有詞級 occurrence 的判讀狀態、優先級、推估注音與命中規則。
 2. `outputs/review/reviewable_phrase_candidates.json`：目前已由規則命中的 occurrence。
 3. `outputs/review/scored_summary.md`：規則命中數、未解析數、命中字與 pattern 統計。
-4. `outputs/review/scored_review.html`：可搜尋、可依 priority/status 篩選、可切換深色模式的審核 dashboard。
+4. `outputs/review/scored_review.html`：可搜尋、可依 priority/status 篩選、可切換深色模式的審核 dashboard；標記圖會開新分頁，已檢查列可勾選後移到頁面底部的 Checked 區塊。
 
 規則來源是 `data/reading_rules.json`。規則比對只看候選短語、詞級 options 與該 occurrence 附近 context，不用整段 OCR region 直接命中，避免同一行裡其他詞把目前候選誤判成已解析。
 

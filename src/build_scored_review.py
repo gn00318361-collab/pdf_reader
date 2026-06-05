@@ -17,7 +17,7 @@ def build_scored_review() -> Path:
     candidates = read_json(path) if path.exists() else []
 
     rows = []
-    for item in candidates:
+    for index, item in enumerate(candidates):
         crop = item.get("phrase_crop_image") or ""
         crop_name = Path(crop).name if crop else ""
         crop_src = f"phrase_crops/{esc(crop_name)}" if crop_name else ""
@@ -27,8 +27,14 @@ def build_scored_review() -> Path:
         thumbnail = f"<img class=\"thumb\" src=\"{crop_src}\" loading=\"lazy\" alt=\"phrase crop\">" if crop_src else ""
         status = item.get("status")
         priority = item.get("priority")
+        review_id = "|".join(
+            str(item.get(key, ""))
+            for key in ["page", "token_id", "char", "char_index", "candidate_phrase"]
+        )
         rows.append(
-            f"<tr data-status=\"{esc(status)}\" data-priority=\"{esc(priority)}\">"
+            f"<tr data-status=\"{esc(status)}\" data-priority=\"{esc(priority)}\" "
+            f"data-review-id=\"{esc(review_id)}\" data-order=\"{index}\">"
+            f"<td class=\"check-cell\"><input class=\"row-check\" type=\"checkbox\" aria-label=\"標記已檢查\"></td>"
             f"<td><span class=\"pill {esc(priority)}\">{esc(priority)}</span></td>"
             f"<td>{esc(status)}</td>"
             f"<td>{esc(item.get('page'))}</td>"
@@ -40,11 +46,11 @@ def build_scored_review() -> Path:
             f"<td>{esc(item.get('matched_pattern') or '')}</td>"
             f"<td>{esc(item.get('reason'))}</td>"
             f"<td>{esc(item.get('region_text'))}</td>"
-            f"<td><a href=\"{image_link}\">annotated</a></td>"
+            f"<td><a href=\"{image_link}\" target=\"_blank\" rel=\"noopener noreferrer\">annotated</a></td>"
             "</tr>"
         )
 
-    body = "\n".join(rows) or "<tr><td colspan=\"12\">目前沒有候選。</td></tr>"
+    body = "\n".join(rows) or "<tr><td colspan=\"13\">目前沒有候選。</td></tr>"
     output = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -111,6 +117,9 @@ def build_scored_review() -> Path:
     .summary {{
       color: var(--muted);
     }}
+    .summary span + span {{
+      margin-left: 12px;
+    }}
     .controls {{
       display: flex;
       gap: 8px;
@@ -144,6 +153,21 @@ def build_scored_review() -> Path:
       border: 1px solid var(--border);
       background: var(--panel);
     }}
+    .review-section + .review-section {{
+      margin-top: 28px;
+    }}
+    .section-title {{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 10px;
+    }}
+    .section-title h2 {{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }}
     table {{
       width: 100%;
       border-collapse: collapse;
@@ -166,6 +190,29 @@ def build_scored_review() -> Path:
     }}
     .thumb-cell {{
       width: 300px;
+    }}
+    .check-cell {{
+      width: 44px;
+      text-align: center;
+    }}
+    .row-check {{
+      width: 18px;
+      height: 18px;
+      accent-color: var(--link);
+      cursor: pointer;
+    }}
+    .checked-row {{
+      opacity: 0.55;
+      background: var(--panel-2);
+    }}
+    .checked-row .phrase,
+    .checked-row .bpmf {{
+      color: var(--muted);
+    }}
+    .empty-row td {{
+      color: var(--muted);
+      text-align: center;
+      padding: 18px 12px;
     }}
     .thumb {{
       display: block;
@@ -205,7 +252,10 @@ def build_scored_review() -> Path:
   <header>
     <div>
       <h1>詞級候選判讀清單</h1>
-      <div class="summary">顯示：<span id="visibleCount">{len(candidates)}</span> / {len(candidates)}</div>
+      <div class="summary">
+        <span>待審顯示：<span id="visibleCount">{len(candidates)}</span> / <span id="pendingCount">{len(candidates)}</span></span>
+        <span>已檢查：<span id="checkedCount">0</span></span>
+      </div>
     </div>
     <div class="controls">
       <input id="filterBox" type="search" placeholder="篩選字、短語、頁碼、OCR 文字">
@@ -225,10 +275,15 @@ def build_scored_review() -> Path:
     </div>
   </header>
   <main>
-    <div class="table-wrap">
+    <section class="review-section">
+      <div class="section-title">
+        <h2>待審候選</h2>
+      </div>
+      <div class="table-wrap">
       <table>
         <thead>
           <tr>
+            <th>檢查</th>
             <th>優先級</th>
             <th>狀態</th>
             <th>頁碼</th>
@@ -243,9 +298,39 @@ def build_scored_review() -> Path:
             <th>標記圖</th>
           </tr>
         </thead>
-        <tbody>{body}</tbody>
+        <tbody id="pendingBody">{body}</tbody>
       </table>
-    </div>
+      </div>
+    </section>
+    <section class="review-section">
+      <div class="section-title">
+        <h2>Checked</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>檢查</th>
+              <th>優先級</th>
+              <th>狀態</th>
+              <th>頁碼</th>
+              <th>區塊 ID</th>
+              <th>詞級截圖</th>
+              <th>候選短語</th>
+              <th>多音字</th>
+              <th>推估注音</th>
+              <th>規則</th>
+              <th>原因</th>
+              <th>OCR region</th>
+              <th>標記圖</th>
+            </tr>
+          </thead>
+          <tbody id="checkedBody">
+            <tr class="empty-row" id="checkedEmpty"><td colspan="13">尚未勾選任何項目。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
   <script>
     const root = document.documentElement;
@@ -264,13 +349,69 @@ def build_scored_review() -> Path:
     const priorityFilter = document.getElementById("priorityFilter");
     const statusFilter = document.getElementById("statusFilter");
     const visibleCount = document.getElementById("visibleCount");
-    const rows = Array.from(document.querySelectorAll("tbody tr"));
+    const pendingCount = document.getElementById("pendingCount");
+    const checkedCount = document.getElementById("checkedCount");
+    const pendingBody = document.getElementById("pendingBody");
+    const checkedBody = document.getElementById("checkedBody");
+    const checkedEmpty = document.getElementById("checkedEmpty");
+    const storageKey = "scored-review-checked-ids";
+    const rows = Array.from(document.querySelectorAll("#pendingBody tr[data-review-id]"));
+    const checkedIds = new Set(JSON.parse(localStorage.getItem(storageKey) || "[]"));
+
+    function saveChecked() {{
+      localStorage.setItem(storageKey, JSON.stringify(Array.from(checkedIds)));
+    }}
+
+    function sortRows(tbody) {{
+      const sorted = Array.from(tbody.querySelectorAll("tr[data-review-id]")).sort(
+        (a, b) => Number(a.dataset.order) - Number(b.dataset.order)
+      );
+      for (const row of sorted) tbody.appendChild(row);
+    }}
+
+    function updateCounts() {{
+      const pendingRows = Array.from(pendingBody.querySelectorAll("tr[data-review-id]"));
+      const checkedRows = Array.from(checkedBody.querySelectorAll("tr[data-review-id]"));
+      pendingCount.textContent = pendingRows.length;
+      checkedCount.textContent = checkedRows.length;
+      checkedEmpty.style.display = checkedRows.length ? "none" : "";
+    }}
+
+    function setRowChecked(row, checked) {{
+      const checkbox = row.querySelector(".row-check");
+      checkbox.checked = checked;
+      row.classList.toggle("checked-row", checked);
+      if (checked) {{
+        checkedIds.add(row.dataset.reviewId);
+        checkedBody.appendChild(row);
+        sortRows(checkedBody);
+      }} else {{
+        checkedIds.delete(row.dataset.reviewId);
+        pendingBody.appendChild(row);
+        sortRows(pendingBody);
+      }}
+      saveChecked();
+      updateCounts();
+      applyFilters();
+    }}
+
+    for (const row of rows) {{
+      const checkbox = row.querySelector(".row-check");
+      checkbox.addEventListener("change", () => setRowChecked(row, checkbox.checked));
+      if (checkedIds.has(row.dataset.reviewId)) {{
+        checkbox.checked = true;
+        row.classList.add("checked-row");
+        checkedBody.appendChild(row);
+      }}
+    }}
+
     function applyFilters() {{
       const q = filterBox.value.trim().toLowerCase();
       const priority = priorityFilter.value;
       const status = statusFilter.value;
       let shown = 0;
-      for (const row of rows) {{
+      const pendingRows = Array.from(pendingBody.querySelectorAll("tr[data-review-id]"));
+      for (const row of pendingRows) {{
         const textMatch = !q || row.textContent.toLowerCase().includes(q);
         const priorityMatch = !priority || row.dataset.priority === priority;
         const statusMatch = !status || row.dataset.status === status;
@@ -280,6 +421,10 @@ def build_scored_review() -> Path:
       }}
       visibleCount.textContent = shown;
     }}
+    sortRows(pendingBody);
+    sortRows(checkedBody);
+    updateCounts();
+    applyFilters();
     filterBox.addEventListener("input", applyFilters);
     priorityFilter.addEventListener("change", applyFilters);
     statusFilter.addEventListener("change", applyFilters);
@@ -301,4 +446,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
