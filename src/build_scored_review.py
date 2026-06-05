@@ -146,7 +146,7 @@ def build_scored_review() -> Path:
       align-items: center;
       flex-wrap: wrap;
     }}
-    .theme-toggle, .page-button, .state-button, input, select {{
+    .theme-toggle, .page-button, .state-button, input:not([type="checkbox"]), select {{
       border: 1px solid var(--border);
       background: var(--button-bg);
       color: var(--text);
@@ -165,7 +165,7 @@ def build_scored_review() -> Path:
       cursor: not-allowed;
       opacity: 0.45;
     }}
-    input {{
+    input:not([type="checkbox"]) {{
       background: var(--input-bg);
       min-width: 220px;
     }}
