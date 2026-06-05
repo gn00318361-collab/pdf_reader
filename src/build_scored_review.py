@@ -236,15 +236,20 @@ def build_scored_review() -> Path:
       z-index: 1;
     }}
     .thumb-cell {{
-      width: 300px;
+      width: 340px;
+      min-width: 320px;
     }}
     .check-cell {{
-      width: 44px;
+      width: 28px;
+      min-width: 28px;
+      max-width: 28px;
       text-align: center;
+      padding-left: 4px;
+      padding-right: 4px;
     }}
     .row-check, .issue-check {{
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       accent-color: var(--link);
       cursor: pointer;
     }}
@@ -274,8 +279,8 @@ def build_scored_review() -> Path:
     }}
     .thumb {{
       display: block;
-      width: min(300px, 30vw);
-      max-width: 100%;
+      width: 320px;
+      max-width: 320px;
       height: auto;
       border: 1px solid var(--border);
       background: #fff;
@@ -361,8 +366,8 @@ def build_scored_review() -> Path:
       <table>
         <thead>
           <tr>
-            <th>檢查</th>
-            <th>有錯</th>
+            <th class="check-cell" title="已檢查">✓</th>
+            <th class="check-cell" title="有錯/需修正">!</th>
             <th>優先級</th>
             <th>狀態</th>
             <th>頁碼</th>
@@ -390,8 +395,8 @@ def build_scored_review() -> Path:
         <table>
           <thead>
             <tr>
-              <th>檢查</th>
-              <th>有錯</th>
+              <th class="check-cell" title="已檢查">✓</th>
+              <th class="check-cell" title="有錯/需修正">!</th>
               <th>優先級</th>
               <th>狀態</th>
               <th>頁碼</th>
@@ -421,8 +426,8 @@ def build_scored_review() -> Path:
         <table>
           <thead>
             <tr>
-              <th>檢查</th>
-              <th>有錯</th>
+              <th class="check-cell" title="已檢查">✓</th>
+              <th class="check-cell" title="有錯/需修正">!</th>
               <th>優先級</th>
               <th>狀態</th>
               <th>頁碼</th>
