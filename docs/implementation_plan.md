@@ -297,3 +297,71 @@ python src\build_scored_review.py
 2. 規則命中：202
 3. 未解析：271
 4. 優先級分布：high 116、medium 85、low 1、unresolved 271
+
+## JSON semantic second pass
+
+下一層架構修正為：Codex / LLM 不看圖片、不操控 dashboard 做逐字視覺審稿，而是讀 JSON context 做語境判讀。OCR/layout pipeline 的責任是把 PDF 轉成可追溯文字索引；規則或 LLM 的責任是從索引中挑出真正值得人工看的候選。
+
+流程：
+
+```text
+OCR JSON
+  ↓
+full char occurrence index
+  ↓
+cheap filter / semantic targets
+  ↓
+rules or LLM semantic classifier
+  ↓
+review candidates dashboard
+```
+
+### Full char occurrence index
+
+執行：
+
+```powershell
+python src\build_char_occurrences.py --pages "1,4,5,13,15,16-27,30-42"
+```
+
+輸出：
+
+1. `outputs/review/char_occurrences.jsonl`：每個中文字一筆，包含 `id`、page、region、字元位置、context windows、region text、OCR confidence、region bbox、estimated char bbox、page/annotated image path。
+2. `outputs/review/char_occurrences_meta.json`：全字索引基本統計。
+3. `outputs/review/char_occurrences_summary.md`：每頁中文字數與字頻摘要。
+
+目前結果：
+
+1. 中文字 occurrence：13,782
+2. 不重複中文字：1,336
+3. 頁面數：30
+
+`estimated_char_bbox` 是從 OCR region bbox 與字元 index 比例估算，不代表模型真的逐字偵測；它是定位輔助，不是最終審稿依據。
+
+### Semantic targets
+
+執行：
+
+```powershell
+python src\build_semantic_targets.py
+```
+
+輸出：
+
+1. `outputs/review/semantic_targets.jsonl`：cheap filter 後的語境判讀目標。
+2. `outputs/review/semantic_targets_meta.json`：semantic target 統計。
+3. `outputs/review/semantic_targets_summary.md`：trigger、risk level、字分布摘要。
+
+目前 cheap filter 觸發條件：
+
+1. `polyphonic_char`：字出現在 `data/polyphonic_chars.json`。
+2. `phrase_rule_match`：`risk_terms.json` 或 `reading_rules.json` 的詞語規則精準覆蓋目前這個 char index。
+3. `low_confidence_polyphonic`：OCR confidence 低於 threshold 且該字在多音字表中。
+
+目前結果：
+
+1. semantic targets：473
+2. phrase rule match：202
+3. 需要 semantic classifier 補判：271
+
+這代表現有 473 不是最終真理，而是基於目前多音字表與規則集產生的 semantic targets v0。之後若補上更多多音字，只需更新 `polyphonic_chars.json` 並重跑 char index / semantic target，不必重跑 OCR。

@@ -183,3 +183,47 @@ outputs/review/scored_review.html
 ```
 
 這一層的規則只套用在已經從這份 PDF 抽出的 `phrase_occurrences.json`，不會盲目掃描全中文世界。目前指定頁驗證結果為 473 個 occurrence，其中 202 個先由規則命中，271 個保留為 unresolved，留待後續人工審核或更細的模型/規則判讀。`scored_review.html` 支援將標記圖開在新分頁，也能把已檢查列勾選後移到頁面底部的 Checked 區塊；待審候選區提供分頁與每頁筆數下拉選單，方便快速移動到 Checked 區塊。
+
+## JSON Semantic Second Pass
+
+新的第二階段方向是讓 OCR/layout pipeline 先建立完整文字索引，再由規則或 LLM 讀 JSON context 做語境篩選；Codex 不需要看小注音圖片，也不需要在 dashboard 上逐字操作。
+
+```text
+OCR regions
+  ↓
+char_occurrences.jsonl：每個中文字一筆，保留 page、region、context、estimated bbox
+  ↓
+semantic_targets.jsonl：cheap filter 後的語境判讀目標
+  ↓
+semantic classifier：依 context 判斷理論讀音與 review 風險
+  ↓
+dashboard：只顯示真正需要人工確認的 review queue
+```
+
+目前可先產生全字索引與 semantic targets：
+
+```powershell
+python src\build_char_occurrences.py --pages "1,4,5,13,15,16-27,30-42"
+python src\build_semantic_targets.py
+```
+
+輸出包含：
+
+```text
+outputs/review/char_occurrences.jsonl
+outputs/review/char_occurrences_meta.json
+outputs/review/char_occurrences_summary.md
+outputs/review/semantic_targets.jsonl
+outputs/review/semantic_targets_meta.json
+outputs/review/semantic_targets_summary.md
+```
+
+目前指定頁驗證結果：
+
+- 全字 occurrence：13,782
+- 不重複中文字：1,336
+- semantic targets：473
+- 已有規則可直接判讀：202
+- 需要 semantic classifier 補判：271
+
+`estimated_char_bbox` 是根據 OCR region 與字元位置比例估算，主要作為定位輔助；人工審稿仍以詞級 crop 與 annotated page 對照為主。
