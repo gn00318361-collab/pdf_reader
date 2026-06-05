@@ -126,7 +126,7 @@ def build_scored_review() -> Path:
       align-items: center;
       flex-wrap: wrap;
     }}
-    .theme-toggle, input, select {{
+    .theme-toggle, .page-button, input, select {{
       border: 1px solid var(--border);
       background: var(--button-bg);
       color: var(--text);
@@ -134,12 +134,16 @@ def build_scored_review() -> Path:
       border-radius: 6px;
       font-size: 14px;
     }}
-    .theme-toggle {{
+    .theme-toggle, .page-button {{
       cursor: pointer;
       white-space: nowrap;
     }}
-    .theme-toggle:hover {{
+    .theme-toggle:hover, .page-button:hover:not(:disabled) {{
       background: var(--button-hover);
+    }}
+    .page-button:disabled {{
+      cursor: not-allowed;
+      opacity: 0.45;
     }}
     input {{
       background: var(--input-bg);
@@ -167,6 +171,29 @@ def build_scored_review() -> Path:
       margin: 0;
       font-size: 18px;
       letter-spacing: 0;
+    }}
+    .pager {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 14px;
+    }}
+    .page-size-label {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }}
+    .pager select {{
+      padding: 6px 8px;
+    }}
+    .page-info {{
+      min-width: 78px;
+      text-align: center;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
     }}
     table {{
       width: 100%;
@@ -278,6 +305,20 @@ def build_scored_review() -> Path:
     <section class="review-section">
       <div class="section-title">
         <h2>待審候選</h2>
+        <div class="pager" aria-label="待審候選分頁">
+          <label class="page-size-label" for="pageSizeSelect">
+            每頁
+            <select id="pageSizeSelect">
+              <option value="25">25</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+              <option value="all">全部</option>
+            </select>
+          </label>
+          <button class="page-button" type="button" id="prevPage">上一頁</button>
+          <span class="page-info" id="pageInfo">1 / 1</span>
+          <button class="page-button" type="button" id="nextPage">下一頁</button>
+        </div>
       </div>
       <div class="table-wrap">
       <table>
@@ -348,6 +389,10 @@ def build_scored_review() -> Path:
     const filterBox = document.getElementById("filterBox");
     const priorityFilter = document.getElementById("priorityFilter");
     const statusFilter = document.getElementById("statusFilter");
+    const pageSizeSelect = document.getElementById("pageSizeSelect");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+    const pageInfo = document.getElementById("pageInfo");
     const visibleCount = document.getElementById("visibleCount");
     const pendingCount = document.getElementById("pendingCount");
     const checkedCount = document.getElementById("checkedCount");
@@ -357,6 +402,7 @@ def build_scored_review() -> Path:
     const storageKey = "scored-review-checked-ids";
     const rows = Array.from(document.querySelectorAll("#pendingBody tr[data-review-id]"));
     const checkedIds = new Set(JSON.parse(localStorage.getItem(storageKey) || "[]"));
+    let currentPage = 1;
 
     function saveChecked() {{
       localStorage.setItem(storageKey, JSON.stringify(Array.from(checkedIds)));
@@ -395,6 +441,26 @@ def build_scored_review() -> Path:
       applyFilters();
     }}
 
+    function getPageSize() {{
+      const value = pageSizeSelect.value;
+      return value === "all" ? Infinity : Number(value);
+    }}
+
+    function rowMatchesFilters(row) {{
+      const q = filterBox.value.trim().toLowerCase();
+      const priority = priorityFilter.value;
+      const status = statusFilter.value;
+      const textMatch = !q || row.textContent.toLowerCase().includes(q);
+      const priorityMatch = !priority || row.dataset.priority === priority;
+      const statusMatch = !status || row.dataset.status === status;
+      return textMatch && priorityMatch && statusMatch;
+    }}
+
+    function resetToFirstPage() {{
+      currentPage = 1;
+      applyFilters();
+    }}
+
     for (const row of rows) {{
       const checkbox = row.querySelector(".row-check");
       checkbox.addEventListener("change", () => setRowChecked(row, checkbox.checked));
@@ -406,28 +472,39 @@ def build_scored_review() -> Path:
     }}
 
     function applyFilters() {{
-      const q = filterBox.value.trim().toLowerCase();
-      const priority = priorityFilter.value;
-      const status = statusFilter.value;
-      let shown = 0;
       const pendingRows = Array.from(pendingBody.querySelectorAll("tr[data-review-id]"));
+      const matchedRows = pendingRows.filter(rowMatchesFilters);
+      const pageSize = getPageSize();
+      const totalPages = pageSize === Infinity ? 1 : Math.max(1, Math.ceil(matchedRows.length / pageSize));
+      currentPage = Math.min(Math.max(currentPage, 1), totalPages);
+      const start = pageSize === Infinity ? 0 : (currentPage - 1) * pageSize;
+      const end = pageSize === Infinity ? matchedRows.length : start + pageSize;
+      const visibleRows = new Set(matchedRows.slice(start, end));
+
       for (const row of pendingRows) {{
-        const textMatch = !q || row.textContent.toLowerCase().includes(q);
-        const priorityMatch = !priority || row.dataset.priority === priority;
-        const statusMatch = !status || row.dataset.status === status;
-        const match = textMatch && priorityMatch && statusMatch;
-        row.style.display = match ? "" : "none";
-        if (match) shown += 1;
+        row.style.display = visibleRows.has(row) ? "" : "none";
       }}
-      visibleCount.textContent = shown;
+      visibleCount.textContent = matchedRows.length;
+      pageInfo.textContent = `${{currentPage}} / ${{totalPages}}`;
+      prevPage.disabled = currentPage <= 1;
+      nextPage.disabled = currentPage >= totalPages;
     }}
     sortRows(pendingBody);
     sortRows(checkedBody);
     updateCounts();
     applyFilters();
-    filterBox.addEventListener("input", applyFilters);
-    priorityFilter.addEventListener("change", applyFilters);
-    statusFilter.addEventListener("change", applyFilters);
+    filterBox.addEventListener("input", resetToFirstPage);
+    priorityFilter.addEventListener("change", resetToFirstPage);
+    statusFilter.addEventListener("change", resetToFirstPage);
+    pageSizeSelect.addEventListener("change", resetToFirstPage);
+    prevPage.addEventListener("click", () => {{
+      currentPage -= 1;
+      applyFilters();
+    }});
+    nextPage.addEventListener("click", () => {{
+      currentPage += 1;
+      applyFilters();
+    }});
   </script>
 </body>
 </html>

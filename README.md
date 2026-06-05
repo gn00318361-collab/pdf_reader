@@ -182,4 +182,4 @@ outputs/review/scored_summary.md
 outputs/review/scored_review.html
 ```
 
-這一層的規則只套用在已經從這份 PDF 抽出的 `phrase_occurrences.json`，不會盲目掃描全中文世界。目前指定頁驗證結果為 473 個 occurrence，其中 202 個先由規則命中，271 個保留為 unresolved，留待後續人工審核或更細的模型/規則判讀。`scored_review.html` 支援將標記圖開在新分頁，也能把已檢查列勾選後移到頁面底部的 Checked 區塊。
+這一層的規則只套用在已經從這份 PDF 抽出的 `phrase_occurrences.json`，不會盲目掃描全中文世界。目前指定頁驗證結果為 473 個 occurrence，其中 202 個先由規則命中，271 個保留為 unresolved，留待後續人工審核或更細的模型/規則判讀。`scored_review.html` 支援將標記圖開在新分頁，也能把已檢查列勾選後移到頁面底部的 Checked 區塊；待審候選區提供分頁與每頁筆數下拉選單，方便快速移動到 Checked 區塊。
