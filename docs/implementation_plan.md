@@ -279,7 +279,7 @@ python src\build_phrase_review.py
 
 ```powershell
 python src\score_phrase_candidates.py
-python src\build_scored_review.py
+python src\build_review_dashboard.py
 ```
 
 輸出：
@@ -287,7 +287,7 @@ python src\build_scored_review.py
 1. `outputs/review/scored_phrase_candidates.json`：所有詞級 occurrence 的判讀狀態、優先級、推估注音與命中規則。
 2. `outputs/review/reviewable_phrase_candidates.json`：目前已由規則命中的 occurrence。
 3. `outputs/review/scored_summary.md`：規則命中數、未解析數、命中字與 pattern 統計。
-4. `outputs/review/scored_review.html`：可搜尋、可依 priority/status 篩選、可切換深色模式的審核 dashboard；標記圖會開新分頁，待審候選可分頁並調整每頁筆數，已檢查列可勾選後移到頁面底部的 Checked 區塊。
+4. `outputs/review/review_dashboard.html`：可搜尋、可依 priority/status 篩選、可切換深色模式的審核 dashboard；標記圖會開新分頁，待審候選可分頁並調整每頁筆數，已檢查列可勾選後移到頁面底部的 Checked 區塊。`outputs/review/index.html` 是同一個 dashboard 的目錄入口，`scored_review.html` 只保留作舊名稱相容。
 
 規則來源是 `data/reading_rules.json`。規則比對只看候選短語、詞級 options 與該 occurrence 附近 context，不用整段 OCR region 直接命中，避免同一行裡其他詞把目前候選誤判成已解析。
 
@@ -372,7 +372,7 @@ python src\build_semantic_targets.py
 
 ```powershell
 python src\classify_semantic_targets.py
-python src\build_scored_review.py
+python src\build_review_dashboard.py
 ```
 
 輸出：
@@ -382,7 +382,7 @@ python src\build_scored_review.py
 3. `outputs/review/semantic_review_candidates_meta.json`：分類統計。
 4. `outputs/review/semantic_classifier_summary.md`：分類狀態、priority、字分布摘要。
 
-`src/build_scored_review.py` 會優先使用 `semantic_review_candidates.json`，讓第一條人工審稿 dashboard 直接吃第二階段補判結果；若檔案不存在，才退回舊的 `scored_phrase_candidates.json`。
+`src/build_review_dashboard.py` 會優先使用 `semantic_review_candidates.json`，讓第一條人工審稿 dashboard 直接吃第二階段補判結果；若檔案不存在，才退回舊的 `scored_phrase_candidates.json`。
 
 目前結果：
 

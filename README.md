@@ -2,6 +2,52 @@
 
 這個 repo 的目標不是建立完整自動化注音 OCR，而是針對目前這份校刊 PDF，做一個實用的「破音字／多音字風險審稿助手」。
 
+只想開始審稿的人可以直接看 [審核者指南](docs/reviewer_guide.md)。
+
+## 審核者快速開始
+
+朋友或協作者拿到 repo 後，先安裝依賴，再重建 review dashboard：
+
+```powershell
+pip install -r requirements.txt
+python src\run_review_pipeline.py --gpu
+```
+
+如果已經有 OCR JSON，只想重建候選與 dashboard，可用：
+
+```powershell
+python src\run_review_pipeline.py --skip-ocr
+```
+
+完成後開啟主要入口：
+
+```text
+outputs/review/review_dashboard.html
+```
+
+也可以用本機 HTTP server 開：
+
+```powershell
+python -m http.server 8765 --bind 127.0.0.1 --directory outputs
+```
+
+然後瀏覽：
+
+```text
+http://127.0.0.1:8765/review/
+```
+
+審核方式：
+
+1. 先看 `semantic_unresolved` 這 23 筆最不確定的候選。
+2. 再看 `high` 優先級候選。
+3. 看過沒問題勾 `✓`。
+4. 發現注音錯或需要修正勾 `!`，該列會進 Issues 區塊。
+5. 審完按 `匯出標記` 下載 `review_state.json`。
+6. 若要交接，把匯出的內容更新到 `data/review_state.json` 後 commit/push。
+
+目前 dashboard 會顯示 473 筆 review candidates。它不是自動確認 PDF 印錯，而是列出理論讀音與高風險位置，讓人工看 crop / annotated page 做最後確認。
+
 目前的任務已經重新收斂為：
 
 1. 只處理 `data/raw/sample.pdf` 這份 44 頁校刊 PDF。
@@ -170,7 +216,7 @@ outputs/review/phrase_crops/
 
 ```powershell
 python src\score_phrase_candidates.py
-python src\build_scored_review.py
+python src\build_review_dashboard.py
 ```
 
 輸出包含：
@@ -179,10 +225,11 @@ python src\build_scored_review.py
 outputs/review/scored_phrase_candidates.json
 outputs/review/reviewable_phrase_candidates.json
 outputs/review/scored_summary.md
-outputs/review/scored_review.html
+outputs/review/review_dashboard.html
+outputs/review/index.html
 ```
 
-這一層的規則只套用在已經從這份 PDF 抽出的 `phrase_occurrences.json`，不會盲目掃描全中文世界。目前指定頁驗證結果為 473 個 occurrence，其中 202 個先由規則命中，271 個保留為 unresolved，留待後續人工審核或更細的模型/規則判讀。`scored_review.html` 支援將標記圖開在新分頁，也能把已檢查列勾選後移到頁面底部的 Checked 區塊；待審候選區提供分頁與每頁筆數下拉選單，方便快速移動到 Checked 區塊。
+這一層的規則只套用在已經從這份 PDF 抽出的 `phrase_occurrences.json`，不會盲目掃描全中文世界。目前指定頁驗證結果為 473 個 occurrence，其中 202 個先由規則命中，271 個保留為 unresolved，留待後續人工審核或更細的模型/規則判讀。`review_dashboard.html` 支援將標記圖開在新分頁，也能把已檢查列勾選後移到頁面底部的 Checked 區塊；待審候選區提供分頁與每頁筆數下拉選單。
 
 ## JSON Semantic Second Pass
 
@@ -234,7 +281,7 @@ outputs/review/semantic_targets_summary.md
 
 ```powershell
 python src\classify_semantic_targets.py
-python src\build_scored_review.py
+python src\build_review_dashboard.py
 ```
 
 輸出包含：
@@ -244,10 +291,11 @@ outputs/review/semantic_review_candidates.jsonl
 outputs/review/semantic_review_candidates.json
 outputs/review/semantic_review_candidates_meta.json
 outputs/review/semantic_classifier_summary.md
-outputs/review/scored_review.html
+outputs/review/review_dashboard.html
+outputs/review/index.html
 ```
 
-`build_scored_review.py` 會優先讀取 `semantic_review_candidates.json`；若不存在，才退回舊的 `scored_phrase_candidates.json`。目前 classifier 結果：
+`build_review_dashboard.py` 會優先讀取 `semantic_review_candidates.json`；若不存在，才退回舊的 `scored_phrase_candidates.json`。它會輸出 `review_dashboard.html` 與 `index.html`，並保留舊的 `scored_review.html` 相容入口。目前 classifier 結果：
 
 - review candidates：473
 - 已補上理論讀音：450
@@ -258,7 +306,7 @@ outputs/review/scored_review.html
 
 ## 人工標記狀態
 
-`scored_review.html` 目前支援兩種人工標記：
+`review_dashboard.html` 目前支援兩種人工標記：
 
 1. `檢查`：代表該列已人工看過，會移到 Checked 區塊。
 2. `有錯`：代表該列疑似注音錯誤或需要修正，會紅色 highlight 並移到 Issues 區塊。
