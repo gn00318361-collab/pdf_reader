@@ -163,3 +163,23 @@ outputs/review/phrase_crops/
 ```
 
 `phrase_review.html` 會列出每個多音字 occurrence 的估算詞級 crop、候選短語、可能讀音與原 OCR region，並提供搜尋篩選與深色模式。這一層仍是候選整理，不是最終自動判錯。
+
+## 有限 Corpus 候選判讀
+
+詞級候選產生後，可以套用 `data/reading_rules.json` 做第一層判讀與排序：
+
+```powershell
+python src\score_phrase_candidates.py
+python src\build_scored_review.py
+```
+
+輸出包含：
+
+```text
+outputs/review/scored_phrase_candidates.json
+outputs/review/reviewable_phrase_candidates.json
+outputs/review/scored_summary.md
+outputs/review/scored_review.html
+```
+
+這一層的規則只套用在已經從這份 PDF 抽出的 `phrase_occurrences.json`，不會盲目掃描全中文世界。目前指定頁驗證結果為 473 個 occurrence，其中 202 個先由規則命中，271 個保留為 unresolved，留待後續人工審核或更細的模型/規則判讀。

@@ -10,6 +10,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_PDF = PROJECT_ROOT / "data" / "raw" / "sample.pdf"
 RISK_TERMS_PATH = PROJECT_ROOT / "data" / "risk_terms.json"
 POLYPHONIC_CHARS_PATH = PROJECT_ROOT / "data" / "polyphonic_chars.json"
+READING_RULES_PATH = PROJECT_ROOT / "data" / "reading_rules.json"
 PAGES_DIR = PROJECT_ROOT / "outputs" / "pages"
 OCR_DIR = PROJECT_ROOT / "outputs" / "ocr"
 REVIEW_DIR = PROJECT_ROOT / "outputs" / "review"

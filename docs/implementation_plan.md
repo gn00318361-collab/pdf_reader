@@ -272,3 +272,28 @@ python src\build_phrase_review.py
 4. `outputs/review/phrase_review.html`：可搜尋、可切換深色模式的詞級候選 dashboard。
 
 目前詞級 bbox 是根據 OCR region 與字元位置比例估算，目的是比整行框更方便人工檢查；它不是獨立模型偵測出的真實詞框。
+
+## 詞級候選判讀與排序
+
+詞級候選整理後，下一層不是擴充全中文破音詞庫，而是在這份 PDF 的有限 corpus 上套用可控規則，先把高確定性的 occurrence 標出來：
+
+```powershell
+python src\score_phrase_candidates.py
+python src\build_scored_review.py
+```
+
+輸出：
+
+1. `outputs/review/scored_phrase_candidates.json`：所有詞級 occurrence 的判讀狀態、優先級、推估注音與命中規則。
+2. `outputs/review/reviewable_phrase_candidates.json`：目前已由規則命中的 occurrence。
+3. `outputs/review/scored_summary.md`：規則命中數、未解析數、命中字與 pattern 統計。
+4. `outputs/review/scored_review.html`：可搜尋、可依 priority/status 篩選、可切換深色模式的審核 dashboard。
+
+規則來源是 `data/reading_rules.json`。規則比對只看候選短語、詞級 options 與該 occurrence 附近 context，不用整段 OCR region 直接命中，避免同一行裡其他詞把目前候選誤判成已解析。
+
+目前指定頁驗證結果：
+
+1. 詞級 occurrence：473
+2. 規則命中：202
+3. 未解析：271
+4. 優先級分布：high 116、medium 85、low 1、unresolved 271

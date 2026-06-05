@@ -1,0 +1,241 @@
+[
+  {
+    "char": "為",
+    "pattern": "成為",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "priority": "high",
+    "reason": "「成為」中的「為」應讀二聲。"
+  },
+  {
+    "char": "為",
+    "pattern": "因為",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "priority": "high",
+    "reason": "「因為」中的「為」應讀四聲。"
+  },
+  {
+    "char": "為",
+    "pattern": "為了",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "priority": "high",
+    "reason": "「為了」中的「為」應讀四聲。"
+  },
+  {
+    "char": "為",
+    "pattern": "化為",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "priority": "medium",
+    "reason": "「化為」中的「為」通常讀二聲。"
+  },
+  {
+    "char": "長",
+    "pattern": "成長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "priority": "high",
+    "reason": "「成長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "家長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "priority": "high",
+    "reason": "「家長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "師長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "priority": "high",
+    "reason": "「師長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "學長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "priority": "high",
+    "reason": "「學長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "長大",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "priority": "high",
+    "reason": "「長大」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "快樂",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "priority": "high",
+    "reason": "「快樂」中的「樂」應讀 ㄌㄜˋ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "樂趣",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "priority": "medium",
+    "reason": "「樂趣」中的「樂」應讀 ㄌㄜˋ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "樂於",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "priority": "medium",
+    "reason": "「樂於」中的「樂」應讀 ㄌㄜˋ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "音樂",
+    "expected_bopomofo": "ㄩㄝˋ",
+    "priority": "high",
+    "reason": "「音樂」中的「樂」應讀 ㄩㄝˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重要",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "priority": "high",
+    "reason": "「重要」中的「重」應讀 ㄓㄨㄥˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "尊重",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "priority": "medium",
+    "reason": "「尊重」中的「重」應讀 ㄓㄨㄥˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重新",
+    "expected_bopomofo": "ㄔㄨㄥˊ",
+    "priority": "high",
+    "reason": "「重新」中的「重」應讀 ㄔㄨㄥˊ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重複",
+    "expected_bopomofo": "ㄔㄨㄥˊ",
+    "priority": "high",
+    "reason": "「重複」中的「重」應讀 ㄔㄨㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "行動",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "priority": "medium",
+    "reason": "「行動」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "前行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "priority": "medium",
+    "reason": "「前行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教育",
+    "expected_bopomofo": "ㄐㄧㄠˋ",
+    "priority": "medium",
+    "reason": "「教育」中的「教」應讀 ㄐㄧㄠˋ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教學",
+    "expected_bopomofo": "ㄐㄧㄠˋ",
+    "priority": "medium",
+    "reason": "「教學」中的「教」應讀 ㄐㄧㄠˋ。"
+  },
+  {
+    "char": "得",
+    "pattern": "覺得",
+    "expected_bopomofo": "ㄉㄜ˙",
+    "priority": "medium",
+    "reason": "「覺得」中的「得」常讀輕聲。"
+  },
+  {
+    "char": "得",
+    "pattern": "值得",
+    "expected_bopomofo": "ㄉㄜˊ",
+    "priority": "medium",
+    "reason": "「值得」中的「得」應讀 ㄉㄜˊ。"
+  },
+  {
+    "char": "得",
+    "pattern": "得到",
+    "expected_bopomofo": "ㄉㄜˊ",
+    "priority": "medium",
+    "reason": "「得到」中的「得」應讀 ㄉㄜˊ。"
+  },
+  {
+    "char": "著",
+    "pattern": "藏著",
+    "expected_bopomofo": "ㄓㄜ˙",
+    "priority": "medium",
+    "reason": "「藏著」中的「著」通常讀輕聲。"
+  },
+  {
+    "char": "著",
+    "pattern": "帶著",
+    "expected_bopomofo": "ㄓㄜ˙",
+    "priority": "medium",
+    "reason": "「帶著」中的「著」通常讀輕聲。"
+  },
+  {
+    "char": "著",
+    "pattern": "試著",
+    "expected_bopomofo": "ㄓㄜ˙",
+    "priority": "medium",
+    "reason": "「試著」中的「著」通常讀輕聲。"
+  },
+  {
+    "char": "著",
+    "pattern": "著急",
+    "expected_bopomofo": "ㄓㄠˊ",
+    "priority": "high",
+    "reason": "「著急」中的「著」應讀 ㄓㄠˊ。"
+  },
+  {
+    "char": "藏",
+    "pattern": "寶藏",
+    "expected_bopomofo": "ㄗㄤˋ",
+    "priority": "medium",
+    "reason": "「寶藏」中的「藏」應讀 ㄗㄤˋ。"
+  },
+  {
+    "char": "藏",
+    "pattern": "藏著",
+    "expected_bopomofo": "ㄘㄤˊ",
+    "priority": "medium",
+    "reason": "「藏著」中的「藏」應讀 ㄘㄤˊ。"
+  },
+  {
+    "char": "便",
+    "pattern": "不便",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "priority": "medium",
+    "reason": "「不便」中的「便」應讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "便利",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "priority": "medium",
+    "reason": "「便利」中的「便」應讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "便能",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "priority": "low",
+    "reason": "「便能」中的「便」通常讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "了",
+    "pattern": "了解",
+    "expected_bopomofo": "ㄌㄧㄠˇ",
+    "priority": "high",
+    "reason": "「了解」中的「了」應讀 ㄌㄧㄠˇ。"
+  }
+]
+
