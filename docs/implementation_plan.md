@@ -209,3 +209,23 @@ outputs/review/review.html
 3. 可以產生 `outputs/review/review_candidates.json`。
 4. 可以產生 `outputs/review/review.html`。
 5. 文件與報告使用繁體中文。
+
+## 目前實作狀態
+
+第一版已加入：
+
+1. `src/render_pages.py`：指定頁 PDF 轉 PNG。
+2. `src/ocr_pages.py`：OCR 文字區塊、輸出每頁 JSON、產生 annotated overlay。
+3. `src/scan_candidates.py`：掃描破音詞庫並輸出候選清單。
+4. `src/build_review.py`：產生靜態 HTML review dashboard。
+5. `src/run_pipeline.py`：串起第 22 頁或指定頁面的完整流程。
+
+目前預設 OCR engine 是 RapidOCR，因為它在 Windows / Python 3.12 上已穩定跑通。PaddleOCR 仍保留為可選 engine，但目前這台機器上的 Paddle CPU build 會撞到 oneDNN/PIR runtime 問題。
+
+第 22 頁驗證指令：
+
+```powershell
+python src\run_pipeline.py --pages 22 --dpi 300 --engine rapidocr --gpu
+```
+
+目前 `--gpu` 會要求 ONNXRuntime 使用 CUDA provider；若缺 CUDA 12 / cuDNN 9 runtime，會自動退回 CPU provider。

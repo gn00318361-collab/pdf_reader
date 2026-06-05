@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+outputs/pages/*.png
+outputs/ocr/*.json
+outputs/review/*.json
+outputs/review/*.html
+
+!outputs/pages/.gitkeep
+!outputs/ocr/.gitkeep
+!outputs/review/.gitkeep
+

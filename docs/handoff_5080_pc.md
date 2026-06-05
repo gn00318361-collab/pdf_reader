@@ -91,3 +91,26 @@ MVP 完成時至少要能回答：
 2. `review_candidates.json` 是否包含頁碼、詞、應檢查字、正確注音與原因。
 3. `review.html` 是否能讓老師快速看懂要檢查什麼。
 4. 執行流程是否可以重跑，不依賴手工改檔。
+
+## PC 實作更新
+
+目前第 22 頁 pipeline 已可跑通：
+
+```powershell
+python src\run_pipeline.py --pages 22 --dpi 300 --engine rapidocr --gpu
+```
+
+已確認產出：
+
+1. `outputs/pages/page_022.png`
+2. `outputs/pages/page_022_annotated.png`
+3. `outputs/ocr/page_022.json`
+4. `outputs/review/review_candidates.json`
+5. `outputs/review/review.html`
+
+`page_022_annotated.png` 會以綠色標出一般 OCR 區塊，以橘色標出命中破音詞庫的區塊。第 22 頁目前可命中：
+
+1. `T007`：`重要`
+2. `T018`：`成為`
+
+ONNXRuntime GPU provider 已安裝且可被偵測，但目前缺 CUDA 12 / cuDNN 9 runtime，因此 RapidOCR 會退回 CPU provider。這不影響 MVP 功能，只影響後續批次速度。

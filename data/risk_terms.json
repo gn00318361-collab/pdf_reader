@@ -1,0 +1,115 @@
+[
+  {
+    "matched_word": "成為",
+    "target_char": "為",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "reason": "「成為」中的「為」應讀二聲，不是四聲。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "因為",
+    "target_char": "為",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "reason": "「因為」中的「為」應讀四聲。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "為了",
+    "target_char": "為",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "reason": "「為了」中的「為」應讀四聲。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "成長",
+    "target_char": "長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "reason": "「成長」中的「長」應讀 ㄓㄤˇ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "長大",
+    "target_char": "長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "reason": "「長大」中的「長」應讀 ㄓㄤˇ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "校長",
+    "target_char": "長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "reason": "「校長」中的「長」應讀 ㄓㄤˇ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "長度",
+    "target_char": "長",
+    "expected_bopomofo": "ㄔㄤˊ",
+    "reason": "「長度」中的「長」應讀 ㄔㄤˊ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "音樂",
+    "target_char": "樂",
+    "expected_bopomofo": "ㄩㄝˋ",
+    "reason": "「音樂」中的「樂」應讀 ㄩㄝˋ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "快樂",
+    "target_char": "樂",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "reason": "「快樂」中的「樂」應讀 ㄌㄜˋ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "重要",
+    "target_char": "重",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "reason": "「重要」中的「重」應讀 ㄓㄨㄥˋ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "重新",
+    "target_char": "重",
+    "expected_bopomofo": "ㄔㄨㄥˊ",
+    "reason": "「重新」中的「重」應讀 ㄔㄨㄥˊ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "行為",
+    "target_char": "行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "reason": "「行為」中的「行」應讀 ㄒㄧㄥˊ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "銀行",
+    "target_char": "行",
+    "expected_bopomofo": "ㄏㄤˊ",
+    "reason": "「銀行」中的「行」應讀 ㄏㄤˊ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "覺得",
+    "target_char": "得",
+    "expected_bopomofo": "ㄉㄜ˙",
+    "reason": "「覺得」中的「得」常讀輕聲。",
+    "confidence": "medium"
+  },
+  {
+    "matched_word": "得到",
+    "target_char": "得",
+    "expected_bopomofo": "ㄉㄜˊ",
+    "reason": "「得到」中的「得」應讀 ㄉㄜˊ。",
+    "confidence": "high"
+  },
+  {
+    "matched_word": "了解",
+    "target_char": "了",
+    "expected_bopomofo": "ㄌㄧㄠˇ",
+    "reason": "「了解」中的「了」應讀 ㄌㄧㄠˇ。",
+    "confidence": "high"
+  }
+]
+
