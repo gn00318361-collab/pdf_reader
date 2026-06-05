@@ -5,11 +5,31 @@ import html
 import shutil
 from pathlib import Path
 
+from PIL import Image
+
 from pipeline_common import REVIEW_DIR, ensure_dirs, read_json
+
+
+ANNOTATED_PAGES_DIR = REVIEW_DIR / "annotated_pages"
 
 
 def esc(value: object) -> str:
     return html.escape("" if value is None else str(value))
+
+
+def annotated_review_link(image: str, cache: set[str]) -> str:
+    if not image:
+        return ""
+    source = Path(image)
+    if not source.exists():
+        return f"../pages/{esc(source.name)}"
+    ANNOTATED_PAGES_DIR.mkdir(parents=True, exist_ok=True)
+    target = ANNOTATED_PAGES_DIR / f"{source.stem}.webp"
+    if str(target) not in cache:
+        with Image.open(source) as img:
+            img.convert("RGB").save(target, "WEBP", quality=82, method=6)
+        cache.add(str(target))
+    return f"annotated_pages/{esc(target.name)}"
 
 
 def build_review_dashboard() -> Path:
@@ -20,13 +40,13 @@ def build_review_dashboard() -> Path:
     candidates = read_json(path) if path.exists() else []
 
     rows = []
+    annotated_cache: set[str] = set()
     for index, item in enumerate(candidates):
         crop = item.get("phrase_crop_image") or ""
         crop_name = Path(crop).name if crop else ""
         crop_src = f"phrase_crops/{esc(crop_name)}" if crop_name else ""
         image = item.get("annotated_image") or item.get("annotated_page_path") or ""
-        image_name = Path(image).name if image else ""
-        image_link = f"../pages/{esc(image_name)}" if image_name else ""
+        image_link = annotated_review_link(image, annotated_cache)
         thumbnail = f"<img class=\"thumb\" src=\"{crop_src}\" loading=\"lazy\" alt=\"phrase crop\">" if crop_src else ""
         status = item.get("status")
         priority = item.get("priority")

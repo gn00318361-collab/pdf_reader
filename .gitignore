@@ -11,7 +11,18 @@ outputs/review/*.html
 outputs/review/*.md
 outputs/review/crops/
 outputs/review/phrase_crops/
+outputs/review/annotated_pages/
 
 !outputs/pages/.gitkeep
 !outputs/ocr/.gitkeep
 !outputs/review/.gitkeep
+!outputs/review/review_dashboard.html
+!outputs/review/index.html
+!outputs/review/scored_review.html
+!outputs/review/semantic_review_candidates.json
+!outputs/review/semantic_review_candidates_meta.json
+!outputs/review/semantic_classifier_summary.md
+!outputs/review/phrase_crops/
+!outputs/review/phrase_crops/*.webp
+!outputs/review/annotated_pages/
+!outputs/review/annotated_pages/*.webp

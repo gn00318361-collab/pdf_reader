@@ -6,20 +6,7 @@
 
 ## 審核者快速開始
 
-朋友或協作者拿到 repo 後，先安裝依賴，再重建 review dashboard：
-
-```powershell
-pip install -r requirements.txt
-python src\run_review_pipeline.py --gpu
-```
-
-如果已經有 OCR JSON，只想重建候選與 dashboard，可用：
-
-```powershell
-python src\run_review_pipeline.py --skip-ocr
-```
-
-完成後開啟主要入口：
+朋友或協作者拿到 repo 後，可以直接打開已提交的靜態 dashboard：
 
 ```text
 outputs/review/review_dashboard.html
@@ -37,6 +24,19 @@ python -m http.server 8765 --bind 127.0.0.1 --directory outputs
 http://127.0.0.1:8765/review/
 ```
 
+只有在想重新產生 OCR / 候選 / dashboard 時，才需要安裝依賴並重跑 pipeline：
+
+```powershell
+pip install -r requirements.txt
+python src\run_review_pipeline.py --gpu
+```
+
+如果已經有 OCR JSON，只想重建候選與 dashboard，可用：
+
+```powershell
+python src\run_review_pipeline.py --skip-ocr
+```
+
 審核方式：
 
 1. 先看 `semantic_unresolved` 這 23 筆最不確定的候選。
@@ -46,7 +46,7 @@ http://127.0.0.1:8765/review/
 5. 審完按 `匯出標記` 下載 `review_state.json`。
 6. 若要交接，把匯出的內容更新到 `data/review_state.json` 後 commit/push。
 
-目前 dashboard 會顯示 473 筆 review candidates。它不是自動確認 PDF 印錯，而是列出理論讀音與高風險位置，讓人工看 crop / annotated page 做最後確認。
+目前 dashboard 會顯示 473 筆 review candidates。它不是自動確認 PDF 印錯，而是列出理論讀音與高風險位置，讓人工看 crop / annotated page 做最後確認。`outputs/review/phrase_crops/` 與 `outputs/review/annotated_pages/` 已納入 git，因此朋友 git pull 後不需要先跑 pipeline 也能看圖審核。
 
 目前的任務已經重新收斂為：
 

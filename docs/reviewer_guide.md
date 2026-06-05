@@ -2,9 +2,29 @@
 
 這份 repo 的審核目標是人工確認 473 筆多音字/破音字 review candidates。系統只提供理論正確讀音與截圖，不自動判斷 PDF 上印出的注音是否真的錯。
 
-## 產生 Dashboard
+## 開啟 Dashboard
 
-第一次拿到 repo：
+第一次拿到 repo 後，可以直接開啟：
+
+```text
+outputs/review/review_dashboard.html
+```
+
+或用本機 server：
+
+```powershell
+python -m http.server 8765 --bind 127.0.0.1 --directory outputs
+```
+
+然後瀏覽：
+
+```text
+http://127.0.0.1:8765/review/
+```
+
+## 重新產生 Dashboard
+
+只有想重新跑 OCR / 候選 / dashboard 時才需要：
 
 ```powershell
 pip install -r requirements.txt
@@ -17,23 +37,7 @@ python src\run_review_pipeline.py --gpu
 python src\run_review_pipeline.py --skip-ocr
 ```
 
-主要入口：
-
-```text
-outputs/review/review_dashboard.html
-```
-
-也可以開本機 server：
-
-```powershell
-python -m http.server 8765 --bind 127.0.0.1 --directory outputs
-```
-
-然後瀏覽：
-
-```text
-http://127.0.0.1:8765/review/
-```
+目前 repo 已提交靜態 dashboard、詞級 crop、annotated page WebP，所以單純審核不需要先重跑 pipeline。
 
 ## 審核順序
 
