@@ -16,9 +16,7 @@ outputs/review/annotated_pages/
 !outputs/pages/.gitkeep
 !outputs/ocr/.gitkeep
 !outputs/review/.gitkeep
-!outputs/review/review_dashboard.html
 !outputs/review/index.html
-!outputs/review/scored_review.html
 !outputs/review/semantic_review_candidates.json
 !outputs/review/semantic_review_candidates_meta.json
 !outputs/review/semantic_classifier_summary.md

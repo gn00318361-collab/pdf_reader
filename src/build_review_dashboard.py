@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import html
-import shutil
 from pathlib import Path
 
 from PIL import Image
@@ -689,7 +688,7 @@ def build_review_dashboard() -> Path:
       const payload = {{
         schema: "pdf_reader_review_state.v1",
         exported_at: new Date().toISOString(),
-        source: "scored_review.html",
+        source: "index.html",
         reviewed_ids: Array.from(checkedIds),
         issue_ids: Array.from(issueIds),
         issues: allRows.filter(row => issueIds.has(row.dataset.reviewId)).map(rowPayload),
@@ -758,13 +757,9 @@ def build_review_dashboard() -> Path:
 </body>
 </html>
 """
-    out_path = REVIEW_DIR / "review_dashboard.html"
+    out_path = REVIEW_DIR / "index.html"
     out_path.write_text(output, encoding="utf-8")
-    shutil.copyfile(out_path, REVIEW_DIR / "index.html")
-    shutil.copyfile(out_path, REVIEW_DIR / "scored_review.html")
     print(f"wrote review dashboard HTML -> {out_path}")
-    print(f"wrote review dashboard index -> {REVIEW_DIR / 'index.html'}")
-    print(f"wrote legacy scored review HTML -> {REVIEW_DIR / 'scored_review.html'}")
     return out_path
 
 

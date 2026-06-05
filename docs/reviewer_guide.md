@@ -7,7 +7,7 @@
 第一次拿到 repo 後，可以直接開啟：
 
 ```text
-outputs/review/review_dashboard.html
+outputs/review/index.html
 ```
 
 或用本機 server：
