@@ -104,7 +104,11 @@ outputs/review/review.html
 
 `page_022_annotated.png` 會把 OCR 偵測到的文字區塊標上 `T001`、`T002` 等 ID；命中破音詞庫的區塊會用橘色標出。`review.html` 是第一版靜態 dashboard，方便人工依頁碼與 token ID 回查。
 
-目前 RapidOCR 在這台 PC 可穩定跑通。ONNXRuntime 已偵測到 CUDA provider，但目前缺 CUDA 12 / cuDNN 9 runtime 依賴，會自動退回 CPU provider；功能流程不受影響，GPU 加速可作為下一步環境優化。
+目前 RapidOCR 在這台 PC 可穩定跑通，並已透過 ONNXRuntime CUDA provider 使用 GPU。可用下列指令檢查 GPU runtime：
+
+```powershell
+python src\check_gpu_runtime.py
+```
 
 若要跑所有指定頁：
 

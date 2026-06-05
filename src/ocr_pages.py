@@ -17,6 +17,7 @@ from pipeline_common import (
     read_json,
     write_json,
 )
+from gpu_runtime import preload_onnxruntime_cuda
 
 
 def load_font(size: int) -> ImageFont.ImageFont:
@@ -151,6 +152,10 @@ def build_rapid_engine(use_gpu: bool):
         "Global.log_level": "warning",
     }
     if use_gpu:
+        ok, message = preload_onnxruntime_cuda()
+        print(message)
+        if not ok:
+            print("RapidOCR GPU preload failed; ONNXRuntime may fall back to CPU.")
         params.update(
             {
                 "EngineConfig.onnxruntime.use_cuda": True,
@@ -174,20 +179,18 @@ def run_paddle_ocr(ocr: Any, image_path: str) -> Any:
     raise RuntimeError("Unsupported PaddleOCR object: missing ocr/predict method.")
 
 
-def run_ocr(engine: str, use_gpu: bool, image_path: str) -> tuple[str, list[dict[str, Any]]]:
+def build_ocr_runner(engine: str, use_gpu: bool):
     if engine in {"paddle", "auto"}:
         try:
             paddle_ocr = build_ocr_engine(use_gpu=use_gpu)
-            result = run_paddle_ocr(paddle_ocr, image_path)
-            return "paddle", paddle_result_to_items(result)
+            return "paddle", lambda image_path: paddle_result_to_items(run_paddle_ocr(paddle_ocr, image_path))
         except Exception as exc:
             if engine == "paddle":
                 raise
             print(f"PaddleOCR failed, falling back to RapidOCR: {exc}")
 
     rapid_ocr = build_rapid_engine(use_gpu=use_gpu)
-    result = rapid_ocr(image_path)
-    return "rapidocr", rapid_result_to_items(result)
+    return "rapidocr", lambda image_path: rapid_result_to_items(rapid_ocr(image_path))
 
 
 def draw_overlay(page: int, items: list[dict[str, Any]]) -> None:
@@ -233,6 +236,7 @@ def draw_overlay(page: int, items: list[dict[str, Any]]) -> None:
 def ocr_pages(pages: list[int], use_gpu: bool, engine: str) -> list[str]:
     ensure_dirs()
     risk_terms = read_json(RISK_TERMS_PATH)
+    engine_used, ocr_runner = build_ocr_runner(engine, use_gpu)
     written: list[str] = []
 
     for page in pages:
@@ -240,7 +244,7 @@ def ocr_pages(pages: list[int], use_gpu: bool, engine: str) -> list[str]:
         if not image_path.exists():
             raise FileNotFoundError(f"Missing rendered page image: {image_path}")
 
-        engine_used, items = run_ocr(engine, use_gpu, str(image_path))
+        items = ocr_runner(str(image_path))
         for index, item in enumerate(items, start=1):
             item["token_id"] = f"T{index:03d}"
             item["matched_risk_terms"] = find_matches(item["text"], risk_terms)

@@ -113,4 +113,13 @@ python src\run_pipeline.py --pages 22 --dpi 300 --engine rapidocr --gpu
 1. `T007`：`重要`
 2. `T018`：`成為`
 
-ONNXRuntime GPU provider 已安裝且可被偵測，但目前缺 CUDA 12 / cuDNN 9 runtime，因此 RapidOCR 會退回 CPU provider。這不影響 MVP 功能，只影響後續批次速度。
+ONNXRuntime GPU provider 已安裝，CUDA 12 / cuDNN 9 runtime 已透過 Python NVIDIA wheels 補齊。可用下列指令驗證：
+
+```powershell
+python src\check_gpu_runtime.py
+```
+
+通過時應看到：
+
+1. ONNXRuntime smoke test session providers 第一順位是 `CUDAExecutionProvider`
+2. RapidOCR `det` / `cls` / `rec` sessions 第一順位都是 `CUDAExecutionProvider`

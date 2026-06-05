@@ -228,4 +228,10 @@ outputs/review/review.html
 python src\run_pipeline.py --pages 22 --dpi 300 --engine rapidocr --gpu
 ```
 
-目前 `--gpu` 會要求 ONNXRuntime 使用 CUDA provider；若缺 CUDA 12 / cuDNN 9 runtime，會自動退回 CPU provider。
+目前 `--gpu` 會要求 ONNXRuntime 使用 CUDA provider。GPU runtime 已透過 Python 環境中的 NVIDIA CUDA/cuDNN wheels 補齊，可用下列指令驗證：
+
+```powershell
+python src\check_gpu_runtime.py
+```
+
+通過時應看到 ONNXRuntime session 與 RapidOCR det/cls/rec sessions 都以 `CUDAExecutionProvider` 為第一順位。
