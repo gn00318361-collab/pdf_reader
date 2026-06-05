@@ -7,6 +7,7 @@ outputs/pages/*.png
 outputs/ocr/*.json
 outputs/review/*.json
 outputs/review/*.html
+outputs/review/*.md
 outputs/review/crops/
 
 !outputs/pages/.gitkeep

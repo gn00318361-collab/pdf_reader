@@ -115,3 +115,30 @@ python src\check_gpu_runtime.py
 ```powershell
 python src\run_pipeline.py --pages "1,4,5,13,15,16-27,30-42" --dpi 300 --engine rapidocr --gpu
 ```
+
+## Corpus 多音字索引
+
+固定風險詞庫只是第一層篩選。針對目前這份有限 PDF，更重要的是先把 OCR 到的正文全部整理成 corpus，再找出這份校刊裡實際出現的多音字上下文。
+
+可用下列指令產生 corpus 與上下文索引：
+
+```powershell
+python src\build_corpus_index.py --pages "1,4,5,13,15,16-27,30-42" --radius 4
+```
+
+輸出包含：
+
+```text
+outputs/review/corpus.json
+outputs/review/char_index.json
+outputs/review/context_candidates.json
+outputs/review/corpus_summary.md
+```
+
+目前這批指定頁驗證結果約為：
+
+- OCR region 數：1221
+- 多音字出現次數：473
+- 不重複上下文候選：464
+
+這些候選還不是最終審稿清單，而是下一步做詞級判斷、規則/LLM 排序與精準 crop 的原始材料。

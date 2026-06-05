@@ -235,3 +235,22 @@ python src\check_gpu_runtime.py
 ```
 
 通過時應看到 ONNXRuntime session 與 RapidOCR det/cls/rec sessions 都以 `CUDAExecutionProvider` 為第一順位。
+
+## 新階段：有限 corpus 索引
+
+固定 `risk_terms.json` 只能找已知詞。針對目前這份 PDF，應先利用 OCR 結果建立有限 corpus，列出實際出現的多音字與上下文。
+
+執行：
+
+```powershell
+python src\build_corpus_index.py --pages "1,4,5,13,15,16-27,30-42" --radius 4
+```
+
+輸出：
+
+1. `outputs/review/corpus.json`：所有 OCR regions 與全文。
+2. `outputs/review/char_index.json`：多音字出現位置、頁碼、token、上下文。
+3. `outputs/review/context_candidates.json`：去重後的上下文候選。
+4. `outputs/review/corpus_summary.md`：人工快速閱讀摘要。
+
+下一步應基於這些實際出現的上下文，產生更精準的詞級候選，而不是盲目擴充全中文世界的破音詞庫。
