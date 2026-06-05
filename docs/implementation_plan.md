@@ -365,3 +365,33 @@ python src\build_semantic_targets.py
 3. 需要 semantic classifier 補判：271
 
 這代表現有 473 不是最終真理，而是基於目前多音字表與規則集產生的 semantic targets v0。之後若補上更多多音字，只需更新 `polyphonic_chars.json` 並重跑 char index / semantic target，不必重跑 OCR。
+
+### Semantic classifier
+
+在 `semantic_targets.jsonl` 產生後，可用本地規則型 classifier 先補判理論正確讀音：
+
+```powershell
+python src\classify_semantic_targets.py
+python src\build_scored_review.py
+```
+
+輸出：
+
+1. `outputs/review/semantic_review_candidates.jsonl`：JSONL 版 classifier 結果。
+2. `outputs/review/semantic_review_candidates.json`：dashboard 可直接讀取的 JSON 版 classifier 結果。
+3. `outputs/review/semantic_review_candidates_meta.json`：分類統計。
+4. `outputs/review/semantic_classifier_summary.md`：分類狀態、priority、字分布摘要。
+
+`src/build_scored_review.py` 會優先使用 `semantic_review_candidates.json`，讓第一條人工審稿 dashboard 直接吃第二階段補判結果；若檔案不存在，才退回舊的 `scored_phrase_candidates.json`。
+
+目前結果：
+
+1. review candidates：473
+2. 已有理論讀音：450
+3. 仍未解析：23
+4. `rule_carried`：202
+5. `semantic_rule_matched`：93
+6. `default_by_char_context`：155
+7. `semantic_unresolved`：23
+
+這一層沒有看圖片，也沒有自動確認 PDF 上印出的注音是否正確。它只根據中文 context 補上「理論正確讀音」與 reason，最後仍由 dashboard 讓人工看 crop / annotated page 做確認。

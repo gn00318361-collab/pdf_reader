@@ -227,3 +227,31 @@ outputs/review/semantic_targets_summary.md
 - 需要 semantic classifier 補判：271
 
 `estimated_char_bbox` 是根據 OCR region 與字元位置比例估算，主要作為定位輔助；人工審稿仍以詞級 crop 與 annotated page 對照為主。
+
+## Semantic Classifier 與 Dashboard 回灌
+
+`semantic_targets.jsonl` 產生後，可以用本地規則型 semantic classifier 先補判理論讀音：
+
+```powershell
+python src\classify_semantic_targets.py
+python src\build_scored_review.py
+```
+
+輸出包含：
+
+```text
+outputs/review/semantic_review_candidates.jsonl
+outputs/review/semantic_review_candidates.json
+outputs/review/semantic_review_candidates_meta.json
+outputs/review/semantic_classifier_summary.md
+outputs/review/scored_review.html
+```
+
+`build_scored_review.py` 會優先讀取 `semantic_review_candidates.json`；若不存在，才退回舊的 `scored_phrase_candidates.json`。目前 classifier 結果：
+
+- review candidates：473
+- 已補上理論讀音：450
+- 仍未解析：23
+- 來源分布：202 筆既有規則、248 筆 semantic classifier 補判、23 筆保留人工判斷
+
+人工審稿時可先在 dashboard 用 status filter 看 `semantic_unresolved`，確認這 23 筆最不確定的候選；再依 high / medium 優先級往下審。

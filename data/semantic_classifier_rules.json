@@ -1,0 +1,458 @@
+[
+  {
+    "char": "了",
+    "pattern": "了解",
+    "expected_bopomofo": "ㄌㄧㄠˇ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「了解」中的「了」應讀 ㄌㄧㄠˇ。"
+  },
+  {
+    "char": "便",
+    "pattern": "方便",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「方便」中的「便」應讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "隨便",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「隨便」中的「便」應讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "輕便",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「輕便」中的「便」應讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "便因",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「便因」語境中的「便」作副詞，通常讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "便早",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「便早...」語境中的「便」作副詞，通常讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "便",
+    "pattern": "便會",
+    "expected_bopomofo": "ㄅㄧㄢˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「便會」中的「便」作副詞，通常讀 ㄅㄧㄢˋ。"
+  },
+  {
+    "char": "得",
+    "pattern": "心得",
+    "expected_bopomofo": "ㄉㄜˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「心得」中的「得」應讀 ㄉㄜˊ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教室",
+    "expected_bopomofo": "ㄐㄧㄠˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「教室」中的「教」應讀 ㄐㄧㄠˋ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教務",
+    "expected_bopomofo": "ㄐㄧㄠˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「教務」中的「教」應讀 ㄐㄧㄠˋ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教材",
+    "expected_bopomofo": "ㄐㄧㄠˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「教材」中的「教」應讀 ㄐㄧㄠˋ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教導",
+    "expected_bopomofo": "ㄐㄧㄠˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「教導」中的「教」應讀 ㄐㄧㄠˋ。"
+  },
+  {
+    "char": "教",
+    "pattern": "教會",
+    "expected_bopomofo": "ㄐㄧㄠ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「教會我」語境中的「教」作動詞，通常讀 ㄐㄧㄠ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "樂此",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「樂此」中的「樂」應讀 ㄌㄜˋ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "歡樂",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「歡樂」中的「樂」應讀 ㄌㄜˋ。"
+  },
+  {
+    "char": "樂",
+    "pattern": "樂觀",
+    "expected_bopomofo": "ㄌㄜˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「樂觀」中的「樂」應讀 ㄌㄜˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "身為",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「身為」中的「為」應讀 ㄨㄟˊ。"
+  },
+  {
+    "char": "為",
+    "pattern": "行為",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「行為」中的「為」應讀 ㄨㄟˊ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為什",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「為什麼」語境中的「為」應讀 ㄨㄟˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為自",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「為自己／為自...」語境中的「為」通常讀 ㄨㄟˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為班",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「為班上」語境中的「為」通常讀 ㄨㄟˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為你",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「為你」語境中的「為」通常讀 ㄨㄟˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為孩子",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「為孩子」語境中的「為」通常讀 ㄨㄟˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "成長為",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「成長為」中的「為」應讀 ㄨㄟˊ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為《阿公",
+    "expected_bopomofo": "ㄨㄟˋ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「為阿公...」語境中的「為」通常讀 ㄨㄟˋ。"
+  },
+  {
+    "char": "為",
+    "pattern": "為课程",
+    "expected_bopomofo": "ㄨㄟˊ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「以...為課程理念」語境中的「為」通常讀 ㄨㄟˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "發行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「發行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "盛行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「盛行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "步行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「步行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "行走",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「行走」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "航行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「航行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "不行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「不行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "行囊",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「行囊」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "執行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「執行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "慎行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "medium",
+    "reason": "「謹言慎行」中的「行」通常讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "行",
+    "pattern": "爬行",
+    "expected_bopomofo": "ㄒㄧㄥˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「爬行」中的「行」應讀 ㄒㄧㄥˊ。"
+  },
+  {
+    "char": "重",
+    "pattern": "注重",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「注重」中的「重」應讀 ㄓㄨㄥˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重視",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「重視」中的「重」應讀 ㄓㄨㄥˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重重",
+    "expected_bopomofo": "ㄔㄨㄥˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「重重」中的「重」通常讀 ㄔㄨㄥˊ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重逢",
+    "expected_bopomofo": "ㄔㄨㄥˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「重逢」中的「重」應讀 ㄔㄨㄥˊ。"
+  },
+  {
+    "char": "重",
+    "pattern": "珍重",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「珍重」中的「重」應讀 ㄓㄨㄥˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重量",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「重量」中的「重」應讀 ㄓㄨㄥˋ。"
+  },
+  {
+    "char": "重",
+    "pattern": "重性",
+    "expected_bopomofo": "ㄓㄨㄥˋ",
+    "risk_level": "medium",
+    "confidence": "low",
+    "reason": "OCR 文字為「重性」，語境疑似「重要性」；「重」先按 ㄓㄨㄥˋ 標記，需人工確認。"
+  },
+  {
+    "char": "長",
+    "pattern": "會長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「會長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "組長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「組長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "長短",
+    "expected_bopomofo": "ㄔㄤˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「長短」中的「長」應讀 ㄔㄤˊ。"
+  },
+  {
+    "char": "長",
+    "pattern": "長節奏",
+    "expected_bopomofo": "ㄔㄤˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「長節奏」中的「長」應讀 ㄔㄤˊ。"
+  },
+  {
+    "char": "長",
+    "pattern": "漫長",
+    "expected_bopomofo": "ㄔㄤˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「漫長」中的「長」應讀 ㄔㄤˊ。"
+  },
+  {
+    "char": "長",
+    "pattern": "長處",
+    "expected_bopomofo": "ㄔㄤˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「長處」中的「長」應讀 ㄔㄤˊ。"
+  },
+  {
+    "char": "長",
+    "pattern": "長成",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「長成」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "長出",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「長出」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "長",
+    "pattern": "增長",
+    "expected_bopomofo": "ㄓㄤˇ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「增長」中的「長」應讀 ㄓㄤˇ。"
+  },
+  {
+    "char": "藏",
+    "pattern": "藏有",
+    "expected_bopomofo": "ㄘㄤˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「藏有」中的「藏」應讀 ㄘㄤˊ。"
+  },
+  {
+    "char": "藏",
+    "pattern": "收藏",
+    "expected_bopomofo": "ㄘㄤˊ",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「收藏」中的「藏」應讀 ㄘㄤˊ。"
+  },
+  {
+    "char": "藏",
+    "pattern": "實藏",
+    "expected_bopomofo": "ㄗㄤˋ",
+    "risk_level": "medium",
+    "confidence": "low",
+    "reason": "OCR 文字為「實藏」，語境疑似「寶藏」；「藏」先按 ㄗㄤˋ 標記，需人工確認。"
+  },
+  {
+    "char": "著",
+    "pattern": "著想",
+    "expected_bopomofo": "ㄓㄨㄛˊ",
+    "risk_level": "high",
+    "confidence": "high",
+    "reason": "「著想」中的「著」應讀 ㄓㄨㄛˊ。"
+  },
+  {
+    "char": "著",
+    "pattern": "急著",
+    "expected_bopomofo": "ㄓㄜ˙",
+    "risk_level": "medium",
+    "confidence": "high",
+    "reason": "「急著」中的「著」作助詞，通常讀輕聲 ㄓㄜ˙。"
+  }
+]

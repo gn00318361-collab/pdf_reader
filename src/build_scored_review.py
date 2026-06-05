@@ -13,7 +13,9 @@ def esc(value: object) -> str:
 
 def build_scored_review() -> Path:
     ensure_dirs()
-    path = REVIEW_DIR / "scored_phrase_candidates.json"
+    semantic_path = REVIEW_DIR / "semantic_review_candidates.json"
+    scored_path = REVIEW_DIR / "scored_phrase_candidates.json"
+    path = semantic_path if semantic_path.exists() else scored_path
     candidates = read_json(path) if path.exists() else []
 
     rows = []
@@ -21,15 +23,25 @@ def build_scored_review() -> Path:
         crop = item.get("phrase_crop_image") or ""
         crop_name = Path(crop).name if crop else ""
         crop_src = f"phrase_crops/{esc(crop_name)}" if crop_name else ""
-        image = item.get("annotated_image") or ""
+        image = item.get("annotated_image") or item.get("annotated_page_path") or ""
         image_name = Path(image).name if image else ""
         image_link = f"../pages/{esc(image_name)}" if image_name else ""
         thumbnail = f"<img class=\"thumb\" src=\"{crop_src}\" loading=\"lazy\" alt=\"phrase crop\">" if crop_src else ""
         status = item.get("status")
         priority = item.get("priority")
-        review_id = "|".join(
-            str(item.get(key, ""))
-            for key in ["page", "token_id", "char", "char_index", "candidate_phrase"]
+        token_id = item.get("token_id") or item.get("region_id")
+        candidate_phrase = item.get("candidate_phrase") or item.get("matched_phrase") or item.get("context_window_4")
+        matched_pattern = item.get("matched_pattern") or item.get("matched_phrase") or ""
+        classifier_status = item.get("classifier_status") or item.get("status") or ""
+        review_id = item.get("char_occurrence_id") or "|".join(
+            str(value)
+            for value in [
+                item.get("page", ""),
+                token_id or "",
+                item.get("char", ""),
+                item.get("char_index", item.get("char_index_in_region", "")),
+                candidate_phrase or "",
+            ]
         )
         rows.append(
             f"<tr data-status=\"{esc(status)}\" data-priority=\"{esc(priority)}\" "
@@ -38,19 +50,20 @@ def build_scored_review() -> Path:
             f"<td><span class=\"pill {esc(priority)}\">{esc(priority)}</span></td>"
             f"<td>{esc(status)}</td>"
             f"<td>{esc(item.get('page'))}</td>"
-            f"<td>{esc(item.get('token_id'))}</td>"
+            f"<td>{esc(token_id)}</td>"
             f"<td class=\"thumb-cell\">{thumbnail}</td>"
-            f"<td class=\"phrase\">{esc(item.get('candidate_phrase'))}</td>"
+            f"<td class=\"phrase\">{esc(candidate_phrase)}</td>"
             f"<td>{esc(item.get('char'))}</td>"
             f"<td class=\"bpmf\">{esc(item.get('expected_bopomofo') or '待判斷')}</td>"
-            f"<td>{esc(item.get('matched_pattern') or '')}</td>"
+            f"<td>{esc(matched_pattern)}</td>"
+            f"<td>{esc(classifier_status)}</td>"
             f"<td>{esc(item.get('reason'))}</td>"
             f"<td>{esc(item.get('region_text'))}</td>"
             f"<td><a href=\"{image_link}\" target=\"_blank\" rel=\"noopener noreferrer\">annotated</a></td>"
             "</tr>"
         )
 
-    body = "\n".join(rows) or "<tr><td colspan=\"13\">目前沒有候選。</td></tr>"
+    body = "\n".join(rows) or "<tr><td colspan=\"14\">目前沒有候選。</td></tr>"
     output = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -296,6 +309,8 @@ def build_scored_review() -> Path:
       <select id="statusFilter">
         <option value="">全部狀態</option>
         <option value="rule_matched">rule_matched</option>
+        <option value="semantic_classified">semantic_classified</option>
+        <option value="semantic_unresolved">semantic_unresolved</option>
         <option value="unresolved">unresolved</option>
       </select>
       <button class="theme-toggle" type="button" id="themeToggle">切換深色</button>
@@ -334,6 +349,7 @@ def build_scored_review() -> Path:
             <th>多音字</th>
             <th>推估注音</th>
             <th>規則</th>
+            <th>分類狀態</th>
             <th>原因</th>
             <th>OCR region</th>
             <th>標記圖</th>
@@ -361,13 +377,14 @@ def build_scored_review() -> Path:
               <th>多音字</th>
               <th>推估注音</th>
               <th>規則</th>
+              <th>分類狀態</th>
               <th>原因</th>
               <th>OCR region</th>
               <th>標記圖</th>
             </tr>
           </thead>
           <tbody id="checkedBody">
-            <tr class="empty-row" id="checkedEmpty"><td colspan="13">尚未勾選任何項目。</td></tr>
+            <tr class="empty-row" id="checkedEmpty"><td colspan="14">尚未勾選任何項目。</td></tr>
           </tbody>
         </table>
       </div>
