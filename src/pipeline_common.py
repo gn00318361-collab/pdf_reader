@@ -12,6 +12,7 @@ RISK_TERMS_PATH = PROJECT_ROOT / "data" / "risk_terms.json"
 PAGES_DIR = PROJECT_ROOT / "outputs" / "pages"
 OCR_DIR = PROJECT_ROOT / "outputs" / "ocr"
 REVIEW_DIR = PROJECT_ROOT / "outputs" / "review"
+CROPS_DIR = REVIEW_DIR / "crops"
 
 DEFAULT_PAGES = [
     1,
@@ -48,7 +49,7 @@ DEFAULT_PAGES = [
 
 
 def ensure_dirs() -> None:
-    for path in (PAGES_DIR, OCR_DIR, REVIEW_DIR):
+    for path in (PAGES_DIR, OCR_DIR, REVIEW_DIR, CROPS_DIR):
         path.mkdir(parents=True, exist_ok=True)
 
 
@@ -101,4 +102,3 @@ def find_matches(text: str, risk_terms: Iterable[dict[str, Any]]) -> list[dict[s
         if matched_word in normalized:
             matches.append(term)
     return matches
-

@@ -7,8 +7,8 @@ outputs/pages/*.png
 outputs/ocr/*.json
 outputs/review/*.json
 outputs/review/*.html
+outputs/review/crops/
 
 !outputs/pages/.gitkeep
 !outputs/ocr/.gitkeep
 !outputs/review/.gitkeep
-
